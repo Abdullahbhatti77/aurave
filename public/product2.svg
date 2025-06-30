@@ -1,0 +1,91 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with soft gradient -->
+  <rect width="400" height="300" fill="#f3f4f6" />
+  
+  <!-- Product label with barcode -->
+  <g transform="translate(100, 50)">
+    <!-- Label -->
+    <rect x="0" y="0" width="200" height="150" fill="white" stroke="#d1d5db" stroke-width="1" />
+    
+    <!-- Product info -->
+    <text x="10" y="20" font-family="Arial" font-size="10" fill="#111827">AKMB1223</text>
+    <text x="10" y="40" font-family="Arial" font-size="10" fill="#111827">PARTS</text>
+    <text x="10" y="60" font-family="Arial" font-size="10" fill="#111827">QTY</text>
+    <text x="10" y="80" font-family="Arial" font-size="10" fill="#111827">27</text>
+    
+    <!-- Barcode -->
+    <g transform="translate(10, 100)">
+      <!-- Barcode lines -->
+      <rect x="0" y="0" width="2" height="30" fill="black" />
+      <rect x="4" y="0" width="1" height="30" fill="black" />
+      <rect x="8" y="0" width="3" height="30" fill="black" />
+      <rect x="14" y="0" width="2" height="30" fill="black" />
+      <rect x="18" y="0" width="1" height="30" fill="black" />
+      <rect x="22" y="0" width="3" height="30" fill="black" />
+      <rect x="28" y="0" width="1" height="30" fill="black" />
+      <rect x="32" y="0" width="2" height="30" fill="black" />
+      <rect x="38" y="0" width="3" height="30" fill="black" />
+      <rect x="44" y="0" width="1" height="30" fill="black" />
+      <rect x="48" y="0" width="2" height="30" fill="black" />
+      <rect x="52" y="0" width="1" height="30" fill="black" />
+      <rect x="56" y="0" width="3" height="30" fill="black" />
+      <rect x="62" y="0" width="2" height="30" fill="black" />
+      <rect x="66" y="0" width="1" height="30" fill="black" />
+      <rect x="70" y="0" width="2" height="30" fill="black" />
+      <rect x="76" y="0" width="3" height="30" fill="black" />
+      <rect x="82" y="0" width="1" height="30" fill="black" />
+      <rect x="86" y="0" width="2" height="30" fill="black" />
+      <rect x="90" y="0" width="1" height="30" fill="black" />
+      <rect x="94" y="0" width="3" height="30" fill="black" />
+      <rect x="100" y="0" width="2" height="30" fill="black" />
+      <rect x="104" y="0" width="1" height="30" fill="black" />
+      <rect x="108" y="0" width="2" height="30" fill="black" />
+      <rect x="114" y="0" width="3" height="30" fill="black" />
+      <rect x="120" y="0" width="1" height="30" fill="black" />
+      <rect x="124" y="0" width="2" height="30" fill="black" />
+      <rect x="128" y="0" width="1" height="30" fill="black" />
+      <rect x="132" y="0" width="3" height="30" fill="black" />
+      <rect x="138" y="0" width="2" height="30" fill="black" />
+      <rect x="142" y="0" width="1" height="30" fill="black" />
+      <rect x="146" y="0" width="2" height="30" fill="black" />
+      <rect x="150" y="0" width="1" height="30" fill="black" />
+      <rect x="154" y="0" width="3" height="30" fill="black" />
+      <rect x="160" y="0" width="2" height="30" fill="black" />
+      <rect x="164" y="0" width="1" height="30" fill="black" />
+      <rect x="168" y="0" width="2" height="30" fill="black" />
+      <rect x="172" y="0" width="3" height="30" fill="black" />
+      <rect x="178" y="0" width="2" height="30" fill="black" />
+      
+      <!-- Barcode number -->
+      <text x="90" y="45" font-family="Arial" font-size="10" text-anchor="middle" fill="black">4750348221483</text>
+    </g>
+  </g>
+  
+  <!-- Product name overlay -->
+  <g transform="translate(0, 220)">
+    <rect x="0" y="0" width="400" height="80" fill="#f472b6" />
+    <text x="200" y="30" font-family="Arial" font-weight="bold" font-size="16" text-anchor="middle" fill="white">Hydrating Night Cream</text>
+    <text x="200" y="55" font-family="Arial" font-weight="bold" font-size="14" text-anchor="middle" fill="white">PKR 18000.00</text>
+  </g>
+  
+  <!-- Save badge -->
+  <g transform="translate(300, 20)">
+    <rect x="0" y="0" width="80" height="25" rx="12.5" fill="#f59e0b" />
+    <text x="40" y="17" font-family="Arial" font-weight="bold" font-size="12" text-anchor="middle" fill="white">Save PKR 6000</text>
+  </g>
+  
+  <!-- Rating stars -->
+  <g transform="translate(20, 200)">
+    <!-- Stars -->
+    <g>
+      <polygon points="0,0 3,9 12,9 5,15 8,24 0,18 -8,24 -5,15 -12,9 -3,9" fill="#fbbf24" transform="scale(0.5)" />
+      <polygon points="25,0 28,9 37,9 30,15 33,24 25,18 17,24 20,15 13,9 22,9" fill="#fbbf24" transform="scale(0.5)" />
+      <polygon points="50,0 53,9 62,9 55,15 58,24 50,18 42,24 45,15 38,9 47,9" fill="#fbbf24" transform="scale(0.5)" />
+      <polygon points="75,0 78,9 87,9 80,15 83,24 75,18 67,24 70,15 63,9 72,9" fill="#fbbf24" transform="scale(0.5)" />
+      <polygon points="100,0 103,9 112,9 105,15 108,24 100,18 92,24 95,15 88,9 97,9" fill="#d1d5db" transform="scale(0.5)" />
+    </g>
+    
+    <!-- Rating text -->
+    <text x="70" y="12" font-family="Arial" font-size="10" fill="#111827">4.8 (189 reviews)</text>
+  </g>
+</svg>

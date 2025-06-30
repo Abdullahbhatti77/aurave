@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <style>
+    .logo-text { font-family: serif; font-weight: normal; }
+    .tagline { font-family: sans-serif; font-size: 14px; letter-spacing: 2px; }
+  </style>
+  <g fill="#000">
+    <!-- Stylized A and V -->
+    <path d="M150,150 C120,180 100,250 150,300 C170,320 200,280 220,250 C240,220 280,150 350,200 C380,220 400,280 380,300 C360,320 330,310 320,290" stroke="#000" stroke-width="8" fill="none"/>
+    
+    <!-- Text elements -->
+    <text x="250" y="350" text-anchor="middle" class="logo-text" font-size="36">AURA VÉ</text>
+    <text x="250" y="380" text-anchor="middle" class="tagline">SKINCARE & COSMETICS</text>
+  </g>
+</svg>
