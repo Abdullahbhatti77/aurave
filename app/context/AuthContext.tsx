@@ -1,6 +1,13 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 interface User {
   id: string;
@@ -14,7 +21,10 @@ interface AuthContextType {
   isLoading: boolean;
   isAuthenticated: boolean;
   isAdmin: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; user?: User; error?: string }>;
+  login: (
+    email: string,
+    password: string
+  ) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
 }
 
@@ -23,8 +33,8 @@ const AuthContext = createContext<AuthContextType>({
   isLoading: false,
   isAuthenticated: false,
   isAdmin: false,
-  login: async () => ({ success: false, error: 'Not implemented' }),
-  logout: async () => {}
+  login: async () => ({ success: false, error: "Not implemented" }),
+  logout: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -34,73 +44,50 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const { data: session, status } = useSession();
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const isAuthenticated = !!user;
-  const isAdmin = user?.role === 'admin';
 
-  // Simulate loading user from localStorage on client side
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (error) {
-        console.error('Failed to parse stored user:', error);
-        localStorage.removeItem('user');
-      }
+    if (session?.user) {
+      const mappedUser: User = {
+        id: (session.user as any).id,
+        name: session.user.name || "",
+        email: session.user.email || "",
+        role: (session.user as any).role || "user",
+      };
+      setUser(mappedUser);
+    } else {
+      setUser(null);
     }
-  }, []);
+  }, [session]);
 
   const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    try {
-      // Mock authentication - in a real app, this would be an API call
-      if (email === 'admin@example.com' && password === 'admin123') {
-        const adminUser = {
-          id: '1',
-          name: 'Admin User',
-          email: 'admin@example.com',
-          role: 'admin'
-        };
-        setUser(adminUser);
-        localStorage.setItem('user', JSON.stringify(adminUser));
-        
-        // Set a cookie for server-side auth checks (middleware)
-        document.cookie = 'user_auth=true; path=/; max-age=2592000'; // 30 days
-        
-        return { success: true, user: adminUser };
-      } else if (email === 'user@example.com' && password === 'user123') {
-        const regularUser = {
-          id: '2',
-          name: 'Regular User',
-          email: 'user@example.com',
-          role: 'user'
-        };
-        setUser(regularUser);
-        localStorage.setItem('user', JSON.stringify(regularUser));
-        
-        // Set a cookie for server-side auth checks (middleware)
-        document.cookie = 'user_auth=true; path=/; max-age=2592000'; // 30 days
-        
-        return { success: true, user: regularUser };
-      }
-      return { success: false, error: 'Invalid credentials' };
-    } finally {
-      setIsLoading(false);
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (res?.ok) {
+      return { success: true };
+    } else {
+      return { success: false, error: res?.error || "Login failed" };
     }
   };
 
   const logout = async () => {
+    await signOut({ redirect: false });
     setUser(null);
-    localStorage.removeItem('user');
-    
-    // Remove the auth cookie
-    document.cookie = 'user_auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
   };
 
+  const isAuthenticated = !!user;
+  const isAdmin = user?.role === "admin";
+  const isLoading = status === "loading";
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, isAuthenticated, isAdmin, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, isLoading, isAuthenticated, isAdmin, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

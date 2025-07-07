@@ -1,83 +1,65 @@
-import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { compare } from 'bcrypt';
-
-// In a real application, this would be a database call
-const mockUsers = [
-  {
-    id: '1',
-    name: 'Admin User',
-    email: 'admin@aurave.com',
-    password: '$2b$10$8OxDlUjXBBTK4QFcIfYUXeP0fGPkaVwXqT9HOXhbRv.M5VpVK.Rvu', // hashed 'admin123'
-    role: 'admin'
-  },
-  {
-    id: '2',
-    name: 'Customer User',
-    email: 'user@example.com',
-    password: '$2b$10$8OxDlUjXBBTK4QFcIfYUXeP0fGPkaVwXqT9HOXhbRv.M5VpVK.Rvu', // hashed 'admin123'
-    role: 'user'
-  }
-];
+import clientPromise from "../../../lib/mongodb";
+import { compare } from "bcrypt";
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
-        const user = mockUsers.find(user => user.email === credentials.email);
-        
-        if (!user) {
-          return null;
-        }
+        const client = await clientPromise;
+        const db = client.db("aurave");
+        const user = await db
+          .collection("users")
+          .findOne({ email: credentials.email });
 
-        const isPasswordValid = await compare(credentials.password, user.password);
+        if (!user) return null;
 
-        if (!isPasswordValid) {
-          return null;
-        }
+        const isValid = await compare(credentials.password, user.password);
+        if (!isValid) return null;
 
         return {
-          id: user.id,
+          id: user._id.toString(),
           name: user.name,
           email: user.email,
-          role: user.role
+          role: user.role,
         };
-      }
-    })
+      },
+    }),
   ],
   callbacks: {
-  async jwt({ token, user }) {
-    if (user) {
-      token.id = user.id;
-      token.role = (user as any).role;
-    }
-    return token;
-  },
-  async session({ session, token }) {
-    if (session.user) {
-      session.user.id = token.id as string;
-      (session.user as any).role = token.role;
-    }
-    return session;
-  }
-},
-  pages: {
-    signIn: '/login',
-    error: '/login',
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        (session.user as any).role = token.role;
+      }
+      return session;
+    },
   },
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET || 'your-secret-key',
+  pages: {
+    signIn: "/login",
+    error: "/login",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 });
 
 export { handler as GET, handler as POST };
