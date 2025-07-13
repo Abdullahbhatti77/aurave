@@ -1,69 +1,415 @@
-import Image from 'next/image';
-import Link from 'next/link';
+"use client";
 
-const Hero = () => {
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { ArrowRight, Star, Shield, Truck, Heart, Zap } from "lucide-react";
+import { Button } from "../components/ui/button";
+// import { useCart } from "@/contexts/CartContext";
+// import ReactPixel from "react-facebook-pixel";
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  originalPrice: number;
+  image: string;
+  rating: number;
+  reviews: number;
+}
+
+const HomePage = () => {
+  // const { addToCart } = useCart();
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+
+  // Meta Pixel PageView tracking
+  // useEffect(() => {
+  //   ReactPixel.track("PageView");
+  // }, []);
+
+  // Fetch featured products from API
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const res = await fetch("/api/products?featured=true", {
+          next: { revalidate: 3600 }, // Cache for 1 hour
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setFeaturedProducts(data);
+        } else {
+          // Fallback to static data if API fails
+          setFeaturedProducts([
+            {
+              id: "1",
+              name: "Radiance Renewal Serum",
+              price: 25000.0,
+              originalPrice: 33000.0,
+              image:
+                "https://images.unsplash.com/photo-1635865165118-917ed9e20936",
+              rating: 4.9,
+              reviews: 234,
+            },
+            {
+              id: "2",
+              name: "Hydrating Night Cream",
+              price: 18000.0,
+              originalPrice: 24000.0,
+              image:
+                "https://images.unsplash.com/photo-1635865165118-917ed9e20936",
+              rating: 4.8,
+              reviews: 189,
+            },
+            {
+              id: "3",
+              name: "Vitamin C Brightening Mask",
+              price: 12500.0,
+              originalPrice: 16500.0,
+              image:
+                "https://images.unsplash.com/photo-1635865165118-917ed9e20936",
+              rating: 4.7,
+              reviews: 156,
+            },
+          ]);
+        }
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      }
+    }
+    fetchProducts();
+  }, []);
+
+  const benefits = [
+    {
+      icon: Shield,
+      title: "Clinically Proven",
+      description: "Dermatologist-tested formulas for visible, safe results.",
+    },
+    {
+      icon: Heart,
+      title: "Pure Ingredients",
+      description: "Crafted with the finest natural and organic botanicals.",
+    },
+    {
+      icon: Truck,
+      title: "Swift Delivery",
+      description: "Free, fast shipping on all orders across Pakistan.",
+    },
+  ];
+
+  const handleAddToCart = (product: Product) => {
+    // addToCart(product);
+    // ReactPixel.track("AddToCart", {
+    //   content_name: product.name,
+    //   content_ids: [product.id],
+    //   value: product.price,
+    //   currency: "PKR",
+    // });
+    // toast({
+    //   title: "Added to Cart!",
+    //   description: `${product.name} has been added to your cart.`,
+    //   className: "bg-rose-500 dark:bg-amber-600 text-white dark:text-stone-900 border-0",
+    // });
+  };
+
   return (
-    <section className="relative bg-gradient-to-r from-amber-700/30 to-pink-300/30 py-16">
-      <div className="container mx-auto px-4 py-12">
-        <div className="flex flex-col md:flex-row items-center">
-          <div className="w-full md:w-1/2 mb-10 md:mb-0">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="block text-gray-800">Unlock Your</span>
-              <span className="block text-gray-800">Radiance</span>
-              <span className="block text-amber-500 mt-2">With <span className="text-pink-400">Aurave</span></span>
-              <span className="block text-amber-500">Skincare</span>
-            </h1>
-            <p className="text-gray-600 mb-8 max-w-md">
-              Experience the transformative power of nature and science.
-              Aurave offers luxurious, effective skincare designed to reveal your
-              skin's natural luminosity.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link 
-                href="/products" 
-                className="bg-pink-500 hover:bg-pink-600 text-white font-medium py-3 px-6 rounded-full inline-flex items-center transition-colors"
+    <div className="min-h-screen text-stone-800 dark:text-rose-100">
+      <section className="relative overflow-hidden py-24 md:py-32 hero-bg-light dark:hero-bg-dark">
+        <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-amber-500/10 to-transparent dark:from-rose-900/20 dark:via-amber-800/20"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="space-y-8"
+            >
+              <div className="space-y-4">
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
+                  className="text-5xl lg:text-6xl font-extrabold leading-tight text-stone-900 dark:text-white"
+                >
+                  Unlock Your Radiance
+                  <span className="block text-gradient-theme mt-2">
+                    With Aurave Skincare
+                  </span>
+                </motion.h1>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-xl text-stone-600 dark:text-rose-200 leading-relaxed"
+                >
+                  Experience the transformative power of nature and science.
+                  Aurave offers luxurious, effective skincare designed to reveal
+                  your skin's natural luminosity.
+                </motion.p>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
+                className="flex flex-col sm:flex-row gap-4"
               >
-                Shop Collection
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </Link>
-              <Link 
-                href="/about" 
-                className="border border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-white font-medium py-3 px-6 rounded-full transition-colors"
+                <Link href="/products">
+                  <Button
+                    size="xl"
+                    className="button-primary-gradient pulse-glow-themed rounded-full px-8 py-4 text-lg font-semibold shadow-lg cursor-pointer"
+                  >
+                    Shop Collection
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+                <Link href="/about">
+                  <Button
+                    variant="outline"
+                    size="xl"
+                    className="button-outline-themed rounded-full px-8 py-4 text-lg font-semibold shadow-sm cursor-pointer"
+                  >
+                    Learn More
+                  </Button>
+                </Link>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+              className="relative"
+            >
+              <div className="floating-animation">
+                <Image
+                  className="w-full h-auto rounded-3xl shadow-2xl object-cover aspect-[4/3]"
+                  alt="Beautiful model with glowing skin holding an Aurave product"
+                  src="https://images.unsplash.com/photo-1608134606883-276926be640c"
+                  width={400}
+                  height={300}
+                />
+              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.5 }}
+                className="absolute -bottom-8 -left-8 bg-white dark:bg-stone-800 rounded-2xl p-6 shadow-xl border border-rose-100 dark:border-stone-700"
               >
-                Learn More
-              </Link>
-            </div>
-          </div>
-          <div className="w-full md:w-1/2 relative">
-            <div className="relative rounded-lg overflow-hidden shadow-xl" style={{ animation: 'float 6s ease-in-out infinite' }}>
-              <Image 
-                src="/product-display.jpg" 
-                alt="Aurave Skincare Products" 
-                width={600} 
-                height={400}
-                className="rounded-lg object-cover"
-              />
-              <div className="absolute bottom-4 right-4 bg-black/70 text-white px-4 py-2 rounded-full text-sm">
-                <div className="flex items-center">
-                  <div className="flex">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <svg key={star} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
+                <div className="flex items-center space-x-3">
+                  <div className="flex text-amber-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-5 w-5 fill-current" />
                     ))}
                   </div>
-                  <span className="ml-2">4.9/5 Stars</span>
+                  <div>
+                    <p className="font-semibold text-stone-900 dark:text-white">
+                      4.9/5 Stars
+                    </p>
+                    <p className="text-sm text-stone-600 dark:text-rose-200">
+                      From 2,500+ Happy Customers
+                    </p>
+                  </div>
                 </div>
-                <p className="text-xs">from 2,500+ Happy Customers</p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section className="py-16 md:py-24 bg-white dark:bg-stone-800/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-stone-900 dark:text-white mb-4">
+              The Aurave Promise
+            </h2>
+            <p className="text-lg text-stone-600 dark:text-rose-200 max-w-3xl mx-auto">
+              We are committed to delivering exceptional skincare that you can
+              trust. Here's what sets Aurave apart:
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ delay: index * 0.2, duration: 0.6 }}
+                className="text-center p-8 rounded-2xl bg-gradient-to-br from-rose-50 to-amber-50 dark:from-stone-700 dark:to-neutral-700 hover:shadow-2xl transition-all duration-300 product-card-hover border border-rose-100 dark:border-stone-600"
+              >
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-rose-500 to-amber-500 dark:from-rose-600 dark:to-amber-600 rounded-full mb-6 shadow-lg">
+                  <benefit.icon className="h-10 w-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-semibold text-stone-900 dark:text-amber-300 mb-3">
+                  {benefit.title}
+                </h3>
+                <p className="text-stone-600 dark:text-rose-200 leading-relaxed">
+                  {benefit.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24 bg-gradient-to-br from-stone-100 via-rose-50 to-amber-100 dark:from-stone-900 dark:via-neutral-800 dark:to-rose-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-stone-900 dark:text-white mb-4">
+              Our Featured Elixirs
+            </h2>
+            <p className="text-lg text-stone-600 dark:text-rose-200 max-w-3xl mx-auto">
+              Handpicked favorites loved by our community for their
+              transformative results.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+            {featuredProducts.map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ delay: index * 0.2, duration: 0.7 }}
+                className="bg-white dark:bg-stone-800 rounded-2xl shadow-xl overflow-hidden product-card-hover flex flex-col"
+              >
+                <Link href={`/product/${product.id}`} className="block">
+                  <div className="relative">
+                    <Image
+                      className="w-full h-72 object-cover"
+                      alt={product.name}
+                      src={product.image}
+                      width={300}
+                      height={216}
+                    />
+                    <div className="absolute top-4 right-4 bg-rose-500 dark:bg-amber-600 text-white px-3 py-1.5 rounded-full text-sm font-semibold shadow-md">
+                      Save PKR{" "}
+                      {(product.originalPrice - product.price).toFixed(0)}
+                    </div>
+                  </div>
+                </Link>
+
+                <div className="p-6 flex flex-col flex-grow">
+                  <div className="flex items-center mb-2">
+                    <div className="flex text-amber-400 mr-2">
+                      {[...Array(Math.floor(product.rating))].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-current" />
+                      ))}
+                      {product.rating % 1 !== 0 && (
+                        <Star
+                          key="half"
+                          className="h-4 w-4 fill-current opacity-50"
+                        />
+                      )}
+                    </div>
+                    <span className="text-sm text-stone-600 dark:text-rose-200">
+                      {product.rating.toFixed(1)} ({product.reviews} reviews)
+                    </span>
+                  </div>
+
+                  <Link href={`/product/${product.id}`}>
+                    <h3 className="text-xl font-semibold text-stone-900 dark:text-amber-300 mb-2 hover:text-rose-600 dark:hover:text-amber-400 transition-colors">
+                      {product.name}
+                    </h3>
+                  </Link>
+
+                  <div className="flex items-baseline space-x-2 mb-4">
+                    <span className="text-2xl font-bold text-rose-600 dark:text-amber-400">
+                      PKR {product.price.toFixed(2)}
+                    </span>
+                    <span className="text-md text-stone-500 dark:text-rose-300 line-through">
+                      PKR {product.originalPrice.toFixed(2)}
+                    </span>
+                  </div>
+
+                  <Button
+                    onClick={() => handleAddToCart(product)}
+                    className="w-full mt-auto button-primary-gradient rounded-full py-3 text-md font-semibold"
+                  >
+                    Add to Cart
+                  </Button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-center mt-16"
+          >
+            <Link href="/products">
+              <Button
+                variant="outline"
+                size="xl"
+                className="button-outline-themed rounded-full px-10 py-4 text-lg font-semibold shadow-sm"
+              >
+                Explore All Products
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24 bg-gradient-to-r from-rose-600 to-amber-600 dark:from-rose-700 dark:to-amber-700">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7 }}
+            className="space-y-6"
+          >
+            <Zap className="w-16 h-16 mx-auto text-amber-300" />
+            <h2 className="text-4xl font-bold text-white">
+              Join the Aurave Glow
+            </h2>
+            <p className="text-xl text-rose-100 dark:text-amber-100">
+              Subscribe for exclusive skincare insights, early access to new
+              arrivals, and special promotions.
+            </p>
+            <form
+              className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto"
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                className="flex-1 px-5 py-3.5 rounded-full border-0 focus:ring-2 focus:ring-white/80 outline-none text-stone-800 placeholder-stone-500 bg-white"
+                required
+              />
+              <Button
+                type="submit"
+                className="bg-white text-rose-600 hover:bg-rose-50 dark:text-amber-700 dark:hover:bg-amber-50 px-8 py-3.5 rounded-full font-semibold shadow-md transition-transform hover:scale-105"
+              >
+                Subscribe Now
+              </Button>
+            </form>
+          </motion.div>
+        </div>
+      </section>
+    </div>
   );
 };
 
-export default Hero;
+export default HomePage;

@@ -1,82 +1,193 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary: #f472b6; /* pink-400 */
-  --secondary: #f59e0b; /* amber-500 */
-  --accent: #ec4899; /* pink-500 */
-  --font-sans: 'Poppins', sans-serif;
+  --background: 30 50% 98%; /* stone-50 / amber-50 like */
+  --foreground: 20 14% 4%; /* stone-900 */
+
+  --card: 0 0% 100%; /* white */
+  --card-foreground: 20 14% 4%; /* stone-900 */
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14% 4%;
+
+  --primary: 345 75% 55%; /* rose-600 */
+  --primary-foreground: 355 25% 97%; /* rose-50 */
+
+  --secondary: 30 50% 95%; /* stone-100 / rose-100 like */
+  --secondary-foreground: 345 75% 45%; /* rose-700 */
+
+  --muted: 30 20% 90%; /* stone-200 */
+  --muted-foreground: 25 10% 40%; /* stone-600 */
+
+  --accent: 30 50% 90%; /* amber-200 like */
+  --accent-foreground: 30 90% 30%; /* amber-800 */
+
+  --destructive: 0 70% 50%; /* red-600 */
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 30 20% 85%; /* stone-300 */
+  --input: 30 20% 90%; /* stone-200 */
+  --ring: 345 75% 55%; /* rose-600 */
+
+  --radius: 0.75rem; /* slightly larger radius */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: 20 14% 7%; /* stone-900 */
+  --foreground: 30 50% 95%; /* stone-100 */
+
+  --card: 20 14% 10%; /* stone-800 */
+  --card-foreground: 30 50% 95%; /* stone-100 */
+
+  --popover: 20 14% 7%;
+  --popover-foreground: 30 50% 95%;
+
+  --primary: 40 90% 60%; /* amber-500 */
+  --primary-foreground: 30 90% 5%; /* amber-950 */
+
+  --secondary: 20 14% 15%; /* stone-800 */
+  --secondary-foreground: 40 90% 70%; /* amber-400 */
+
+  --muted: 20 10% 20%; /* stone-700 */
+  --muted-foreground: 25 10% 60%; /* stone-400 */
+
+  --accent: 20 14% 15%; /* stone-800 */
+  --accent-foreground: 40 90% 60%; /* amber-500 */
+
+  --destructive: 0 60% 45%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 20 10% 25%; /* stone-700 */
+  --input: 20 10% 20%; /* stone-700 */
+  --ring: 40 90% 60%; /* amber-500 */
 }
 
-/* ✨ Float Animation */
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-/* ✨ Fade In Up Animation */
-@keyframes fade-in-up {
-  0% {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.2s ease-out forwards;
-}
-
-/* ✨ Glassy Navbar Effect */
-.glass-navbar {
-  backdrop-filter: blur(12px);
-  background-color: rgba(255, 255, 255, 0.7); /* Light theme */
-}
-
-@media (prefers-color-scheme: dark) {
-  .glass-navbar {
-    background-color: rgba(10, 10, 10, 0.6); /* Dark theme */
-  }
+* {
+  border-color: hsl(var(--border));
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  @apply antialiased;
 }
 
-/* Custom scrollbar */
+.text-gradient-theme {
+  @apply bg-gradient-to-r from-rose-600 via-amber-500 to-rose-500 dark:from-amber-400 dark:via-rose-400 dark:to-amber-300;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-bg-light {
+  background-image: radial-gradient(
+      circle at top right,
+      theme("colors.rose.200") 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      theme("colors.amber.200") 0%,
+      transparent 50%
+    );
+}
+.hero-bg-dark {
+  background-image: radial-gradient(
+      circle at top right,
+      theme("colors.rose.900") 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      theme("colors.amber.800") 0%,
+      transparent 50%
+    );
+}
+
+.product-card-hover {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.product-card-hover:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 25px 50px -12px hsla(var(--primary) / 0.25);
+}
+
+.floating-animation {
+  animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-25px) rotate(1deg);
+  }
+}
+
+.pulse-glow-themed {
+  animation: pulse-glow-themed 2.5s infinite alternate;
+}
+
+@keyframes pulse-glow-themed {
+  from {
+    box-shadow: 0 0 15px 0px hsla(var(--primary) / 0.4);
+  }
+  to {
+    box-shadow: 0 0 35px 5px hsla(var(--primary) / 0.6);
+  }
+}
+
+.cart-badge {
+  animation: cart-pop 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes cart-pop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.button-primary-gradient {
+  @apply bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 dark:from-rose-600 dark:to-amber-600 dark:hover:from-rose-700 dark:hover:to-amber-700 text-white;
+}
+
+.button-outline-themed {
+  @apply border-2 border-rose-500 text-rose-600 hover:bg-rose-50 dark:border-amber-500 dark:text-amber-400 dark:hover:bg-amber-500/10;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: hsl(var(--muted) / 0.5);
+  border-radius: var(--radius);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border-radius: 4px;
+  background: hsl(var(--primary) / 0.7);
+  border-radius: var(--radius);
+  transition: background 0.3s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary));
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary) / 0.7) hsl(var(--muted) / 0.5);
 }

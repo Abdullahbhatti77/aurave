@@ -1,156 +1,273 @@
-import Image from 'next/image';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import {
+  Droplet,
+  Sparkles,
+  Leaf,
+  Users,
+  Target,
+  Microscope,
+  Zap,
+} from "lucide-react";
+import { Button } from "../components/ui/button";
+// import { Link } from "react-router-dom";
 
 const AboutPage = () => {
+  const teamMembers = [
+    {
+      name: "Aisha Khan",
+      role: "Founder & CEO",
+      image: "Professional woman with confident smile in business attire",
+      description:
+        "Aisha founded Aurave with a passion for creating skincare that is both effective and kind to the skin and planet.",
+    },
+    {
+      name: "Dr. Bilal Ahmed",
+      role: "Head of R&D",
+      image: "Scientist in lab coat holding a test tube",
+      description:
+        "Dr. Ahmed leads our research team, blending cutting-edge science with natural ingredients.",
+    },
+    {
+      name: "Sara Chen",
+      role: "Marketing Director",
+      image: "Creative professional woman in a modern office setting",
+      description:
+        "Sara crafts Aurave's story, connecting our brand with skincare enthusiasts worldwide.",
+    },
+  ];
+
+  const values = [
+    {
+      icon: Leaf,
+      title: "Natural Purity",
+      description:
+        "We meticulously source the finest natural and organic ingredients, ensuring every product is gentle yet potent.",
+    },
+    {
+      icon: Microscope,
+      title: "Scientific Efficacy",
+      description:
+        "Our formulations are backed by research, blending nature's wisdom with dermatological science for visible results.",
+    },
+    {
+      icon: Sparkles,
+      title: "Radiant Well-being",
+      description:
+        "We believe skincare is self-care. Our products aim to enhance not just your skin, but your overall sense of well-being.",
+    },
+    {
+      icon: Droplet,
+      title: "Ethical Sourcing",
+      description:
+        "Sustainability and ethical practices are at the heart of Aurave, from ingredient sourcing to eco-friendly packaging.",
+    },
+  ];
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      
-      <main className="flex-grow">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-r from-pink-100 to-pink-200 py-16">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">About Aurave</h1>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Discover the story behind our mission to transform skincare with the perfect blend of nature and science.
+    <div className="min-h-screen bg-gradient-to-br from-stone-100 via-rose-50 to-amber-100 dark:from-stone-900 dark:via-neutral-800 dark:to-rose-950 text-stone-800 dark:text-rose-100 overflow-x-hidden">
+      <motion.section
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="relative py-20 md:py-32 text-center hero-bg-light dark:hero-bg-dark"
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-stone-100 dark:to-stone-900 opacity-50"></div>
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.h1
+            className="text-5xl md:text-7xl font-bold mb-6 text-gradient-theme"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
+            About Aurave
+          </motion.h1>
+          <motion.p
+            className="text-xl md:text-2xl text-stone-700 dark:text-rose-200 mb-10 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+          >
+            Crafting radiant beauty from the heart of nature, empowered by
+            science. We are Aurave, your partners in achieving luminous, healthy
+            skin.
+          </motion.p>
+        </div>
+      </motion.section>
+
+      <section className="py-16 md:py-24">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8 }}
+            className="grid md:grid-cols-2 gap-12 items-center"
+          >
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-rose-700 dark:text-amber-400 mb-6">
+                Our Story: The Genesis of Glow
+              </h2>
+              <p className="text-lg text-stone-600 dark:text-rose-300 mb-4 leading-relaxed">
+                Aurave was born from a simple belief: skincare should be a
+                harmonious blend of nature's purity and scientific innovation.
+                We embarked on a journey to create products that not only
+                deliver exceptional results but also nurture your skin with the
+                gentle touch it deserves.
+              </p>
+              <p className="text-lg text-stone-600 dark:text-rose-300 mb-6 leading-relaxed">
+                Our philosophy centers around "Radiant Rituals" – the idea that
+                your daily skincare routine can be a moment of mindful
+                self-care, transforming your skin and uplifting your spirit.
+                Each Aurave product is a testament to this, crafted with love
+                and precision.
+              </p>
+              {/* <Link to="/products">
+                <Button
+                  size="lg"
+                  className="button-primary-gradient pulse-glow-themed rounded-full px-8 py-3 text-lg"
+                >
+                  Explore Our Collection
+                </Button>
+              </Link> */}
+            </div>
+            <motion.div
+              className="relative"
+              initial={{ scale: 0.9, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <img
+                className="rounded-2xl shadow-2xl w-full h-auto object-cover aspect-square"
+                alt="Artistic composition of natural skincare ingredients and Aurave product"
+                src="https://images.unsplash.com/photo-1602631637744-95548611264d"
+              />
+              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-amber-400 dark:bg-rose-600 rounded-full flex items-center justify-center shadow-lg floating-animation">
+                <Sparkles className="w-12 h-12 text-white" />
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24 bg-rose-50 dark:bg-neutral-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-rose-700 dark:text-amber-400 mb-4">
+              Our Core Values
+            </h2>
+            <p className="text-lg text-stone-600 dark:text-rose-300 max-w-2xl mx-auto">
+              The principles that guide every Aurave creation and decision.
             </p>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {values.map((value, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ delay: index * 0.15, duration: 0.6 }}
+                className="bg-white dark:bg-stone-700 p-8 rounded-2xl shadow-xl text-center hover:shadow-2xl transition-shadow duration-300 product-card-hover"
+              >
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-rose-500 to-amber-500 dark:from-rose-600 dark:to-amber-600 rounded-full mb-6 shadow-md">
+                  <value.icon className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-stone-800 dark:text-amber-300 mb-3">
+                  {value.title}
+                </h3>
+                <p className="text-stone-600 dark:text-rose-200 text-sm leading-relaxed">
+                  {value.description}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
+      </section>
 
-        {/* Our Story Section */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center gap-12">
-              <div className="md:w-1/2">
-                <div className="relative h-[400px] w-full rounded-lg overflow-hidden shadow-xl">
-                  <div className="absolute inset-0 bg-pink-200 opacity-20 rounded-lg"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-64 h-64 bg-pink-100 rounded-full flex items-center justify-center">
-                      <span className="text-3xl font-bold text-pink-600">Aurave</span>
-                    </div>
-                  </div>
+      <section className="py-16 md:py-24">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-rose-700 dark:text-amber-400 mb-4">
+              Meet the Visionaries
+            </h2>
+            <p className="text-lg text-stone-600 dark:text-rose-300 max-w-2xl mx-auto">
+              The passionate minds behind Aurave's commitment to excellence.
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            {teamMembers.map((member, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ delay: index * 0.2, duration: 0.6 }}
+                className="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-lg text-center product-card-hover"
+              >
+                <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-amber-400 dark:border-rose-500 shadow-md">
+                  <img
+                    className="w-full h-full object-cover"
+                    alt={member.name}
+                    src="https://images.unsplash.com/photo-1595872018818-97555653a011"
+                  />
                 </div>
-              </div>
-              <div className="md:w-1/2">
-                <h2 className="text-3xl font-bold text-gray-800 mb-6">Our Story</h2>
-                <p className="text-gray-600 mb-4">
-                  Founded in 2018, Aurave was born from a simple yet powerful idea: skincare should be effective, pure, and accessible to everyone. Our founder, Sarah Chen, struggled with sensitive skin for years and was frustrated by products that promised results but delivered disappointment.
+                <h3 className="text-xl font-semibold text-stone-800 dark:text-amber-300 mb-1">
+                  {member.name}
+                </h3>
+                <p className="text-rose-600 dark:text-amber-500 font-medium mb-3">
+                  {member.role}
                 </p>
-                <p className="text-gray-600 mb-4">
-                  After years of research and collaboration with leading dermatologists and botanists, Sarah developed formulations that combined the best of nature with cutting-edge science. The result was a line of products that not only delivered visible results but also respected the skin's natural balance.
+                <p className="text-sm text-stone-600 dark:text-rose-200 leading-relaxed">
+                  {member.description}
                 </p>
-                <p className="text-gray-600">
-                  Today, Aurave has grown into a beloved brand trusted by thousands of customers worldwide. We remain committed to our founding principles: clinical effectiveness, pure ingredients, and exceptional customer experience.
-                </p>
-              </div>
-            </div>
+              </motion.div>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Our Values Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-gray-800 text-center mb-12">Our Values</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white p-8 rounded-lg shadow-md">
-                <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                  <svg className="w-8 h-8 text-pink-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-800 text-center mb-4">Transparency</h3>
-                <p className="text-gray-600 text-center">
-                  We believe in complete honesty about what goes into our products. Every ingredient is carefully selected and clearly disclosed.
-                </p>
-              </div>
-              
-              <div className="bg-white p-8 rounded-lg shadow-md">
-                <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                  <svg className="w-8 h-8 text-pink-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                    <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-800 text-center mb-4">Sustainability</h3>
-                <p className="text-gray-600 text-center">
-                  We're committed to minimizing our environmental impact through responsible sourcing, eco-friendly packaging, and carbon-neutral shipping.
-                </p>
-              </div>
-              
-              <div className="bg-white p-8 rounded-lg shadow-md">
-                <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                  <svg className="w-8 h-8 text-pink-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-800 text-center mb-4">Inclusivity</h3>
-                <p className="text-gray-600 text-center">
-                  We create products for all skin types, tones, and concerns. Everyone deserves to feel confident and beautiful in their skin.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Our Team Section */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-gray-800 text-center mb-12">Meet Our Team</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Team Member 1 */}
-              <div className="bg-white rounded-lg overflow-hidden shadow-md">
-                <div className="h-64 bg-gray-200 flex items-center justify-center">
-                  <div className="w-24 h-24 bg-pink-100 rounded-full flex items-center justify-center">
-                    <span className="text-xl font-bold text-pink-600">SC</span>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-1">Sarah Chen</h3>
-                  <p className="text-pink-600 mb-4">Founder & CEO</p>
-                  <p className="text-gray-600">
-                    With a background in biochemistry and a passion for natural ingredients, Sarah leads our company with vision and purpose.
-                  </p>
-                </div>
-              </div>
-              
-              {/* Team Member 2 */}
-              <div className="bg-white rounded-lg overflow-hidden shadow-md">
-                <div className="h-64 bg-gray-200 flex items-center justify-center">
-                  <div className="w-24 h-24 bg-pink-100 rounded-full flex items-center justify-center">
-                    <span className="text-xl font-bold text-pink-600">DR</span>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-1">Dr. Rachel Kim</h3>
-                  <p className="text-pink-600 mb-4">Chief Scientific Officer</p>
-                  <p className="text-gray-600">
-                    A dermatologist with over 15 years of experience, Dr. Kim oversees our product development and clinical testing.
-                  </p>
-                </div>
-              </div>
-              
-              {/* Team Member 3 */}
-              <div className="bg-white rounded-lg overflow-hidden shadow-md">
-                <div className="h-64 bg-gray-200 flex items-center justify-center">
-                  <div className="w-24 h-24 bg-pink-100 rounded-full flex items-center justify-center">
-                    <span className="text-xl font-bold text-pink-600">JL</span>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-1">James Lee</h3>
-                  <p className="text-pink-600 mb-4">Head of Sustainability</p>
-                  <p className="text-gray-600">
-                    James ensures that our commitment to the environment is reflected in every aspect of our business operations.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <Footer />
+      <section className="py-16 md:py-24 bg-gradient-to-r from-rose-600 to-amber-600 dark:from-rose-700 dark:to-amber-700 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <Zap className="w-16 h-16 mx-auto mb-6 text-amber-300" />
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Join the Aurave Glow Journey
+            </h2>
+            <p className="text-xl text-rose-100 dark:text-amber-100 mb-10">
+              Ready to transform your skincare routine and embrace your natural
+              radiance? Explore our collection and find your perfect Aurave
+              ritual.
+            </p>
+            {/* <Link to="/products">
+              <Button
+                size="xl"
+                className="bg-white text-rose-600 hover:bg-rose-50 dark:text-amber-700 dark:hover:bg-amber-50 rounded-full px-10 py-4 text-xl font-semibold shadow-lg transition-transform hover:scale-105"
+              >
+                Shop All Products
+              </Button>
+            </Link> */}
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 };

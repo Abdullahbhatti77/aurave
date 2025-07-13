@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+// import Navbar from "../components/Navbar";
+// import Footer from "../components/Footer";
+import { motion } from "framer-motion";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -82,19 +83,28 @@ const RegisterPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+      {/* <Navbar /> */}
+      <main className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-[#fcfaf8]">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-md w-full space-y-8 bg-[#fdf6f0] p-8 rounded-lg shadow-xl"
+        >
+          <Link href="/" className="mb-4 flex justify-center">
+            <img
+              src="https://storage.googleapis.com/hostinger-horizons-assets-prod/5021481e-4792-4eba-b9a6-64fa10075184/cecfd89cb24a2d052ad987f7c1320390.png"
+              alt="Aurave Logo"
+              className="h-16 w-auto mx-auto"
+            />
+          </Link>
           <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-[#d7a7b1]">
               Create your account
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
               Or{" "}
-              <Link
-                href="/login"
-                className="font-medium text-pink-600 hover:text-pink-500"
-              >
+              <Link href="/login" className="font-medium text-gray-900">
                 sign in to your existing account
               </Link>
             </p>
@@ -179,7 +189,7 @@ const RegisterPage = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-70"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-[#c4a880] hover:bg-[#d3b58d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-70 cursor-pointer"
             >
               {isLoading ? (
                 <span className="flex items-center">
@@ -213,23 +223,17 @@ const RegisterPage = () => {
 
           <div className="mt-6 text-center text-sm text-gray-600">
             By creating an account, you agree to our{" "}
-            <Link
-              href="/terms"
-              className="font-medium text-pink-600 hover:text-pink-500"
-            >
+            <Link href="/terms" className="font-medium text-[#d7a7b1]">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link
-              href="/privacy"
-              className="font-medium text-pink-600 hover:text-pink-500"
-            >
+            <Link href="/privacy" className="font-medium text-[#d7a7b1]">
               Privacy Policy
             </Link>
           </div>
-        </div>
+        </motion.div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

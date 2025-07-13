@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useAuth } from '../context/AuthContext';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAuth } from "../context/AuthContext";
+// import Navbar from "../components/Navbar";
+// import Footer from "../components/Footer";
 
 interface OrderItem {
   id: string;
@@ -17,7 +17,7 @@ interface OrderItem {
 interface Order {
   id: string;
   date: string;
-  status: 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  status: "processing" | "shipped" | "delivered" | "cancelled";
   total: number;
   items: OrderItem[];
 }
@@ -32,7 +32,7 @@ const OrdersPage = () => {
   useEffect(() => {
     // Check if user is authenticated
     if (!isLoading && !isAuthenticated) {
-      router.push('/login');
+      router.push("/login");
     }
 
     // Load orders
@@ -43,7 +43,7 @@ const OrdersPage = () => {
 
   const loadOrders = async () => {
     setIsOrdersLoading(true);
-    
+
     // In a real application, you would fetch orders from your API
     // For now, we'll use mock data
     setTimeout(() => {
@@ -53,32 +53,32 @@ const OrdersPage = () => {
     }, 1000);
   };
 
-  const getStatusColor = (status: Order['status']) => {
+  const getStatusColor = (status: Order["status"]) => {
     switch (status) {
-      case 'processing':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'shipped':
-        return 'bg-blue-100 text-blue-800';
-      case 'delivered':
-        return 'bg-green-100 text-green-800';
-      case 'cancelled':
-        return 'bg-red-100 text-red-800';
+      case "processing":
+        return "bg-yellow-100 text-yellow-800";
+      case "shipped":
+        return "bg-blue-100 text-blue-800";
+      case "delivered":
+        return "bg-green-100 text-green-800";
+      case "cancelled":
+        return "bg-red-100 text-red-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
+      <div className="pt-20 bg[#fcfaf8]">
+        {/* <Navbar /> */}
         <main className="flex-grow flex items-center justify-center">
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-pink-500"></div>
             <p className="mt-2 text-gray-600">Loading...</p>
           </div>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
@@ -88,9 +88,9 @@ const OrdersPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      
+    <div className="pt-20 bg-[#fcfaf8]">
+      {/* <Navbar /> */}
+
       <main className="flex-grow py-10 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="pb-5 border-b border-gray-200">
@@ -99,7 +99,7 @@ const OrdersPage = () => {
               View and track your orders
             </p>
           </div>
-          
+
           {isOrdersLoading ? (
             <div className="text-center py-10">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-pink-500"></div>
@@ -128,40 +128,63 @@ const OrdersPage = () => {
                   <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
                     <dl className="sm:divide-y sm:divide-gray-200">
                       <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="text-sm font-medium text-gray-500">Status</dt>
+                        <dt className="text-sm font-medium text-gray-500">
+                          Status
+                        </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(selectedOrder.status)}`}>
-                            {selectedOrder.status.charAt(0).toUpperCase() + selectedOrder.status.slice(1)}
+                          <span
+                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(
+                              selectedOrder.status
+                            )}`}
+                          >
+                            {selectedOrder.status.charAt(0).toUpperCase() +
+                              selectedOrder.status.slice(1)}
                           </span>
                         </dd>
                       </div>
                       <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="text-sm font-medium text-gray-500">Total</dt>
+                        <dt className="text-sm font-medium text-gray-500">
+                          Total
+                        </dt>
                         <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                           PKR {selectedOrder.total.toLocaleString()}
                         </dd>
                       </div>
                     </dl>
                   </div>
-                  
+
                   <div className="px-4 py-5 sm:px-6">
-                    <h4 className="text-lg font-medium text-gray-900">Order Items</h4>
+                    <h4 className="text-lg font-medium text-gray-900">
+                      Order Items
+                    </h4>
                   </div>
                   <div className="border-t border-gray-200">
                     <div className="overflow-x-auto">
                       <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                           <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                               Product
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                               Quantity
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                               Price
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                               Subtotal
                             </th>
                           </tr>
@@ -179,7 +202,8 @@ const OrdersPage = () => {
                                 PKR {item.price.toLocaleString()}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                PKR {(item.price * item.quantity).toLocaleString()}
+                                PKR{" "}
+                                {(item.price * item.quantity).toLocaleString()}
                               </td>
                             </tr>
                           ))}
@@ -193,19 +217,34 @@ const OrdersPage = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
                           Order ID
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
                           Date
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
                           Status
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
                           Total
                         </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
                           Actions
                         </th>
                       </tr>
@@ -220,8 +259,13 @@ const OrdersPage = () => {
                             {order.date}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.status)}`}>
-                              {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                            <span
+                              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(
+                                order.status
+                              )}`}
+                            >
+                              {order.status.charAt(0).toUpperCase() +
+                                order.status.slice(1)}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -243,12 +287,25 @@ const OrdersPage = () => {
               )}
             </div>
           ) : (
-            <div className="mt-8 bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="mt-8 bg-[#fcfaf8] shadow overflow-hidden sm:rounded-lg">
               <div className="px-4 py-5 sm:p-6 text-center">
-                <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                <svg
+                  className="mx-auto h-12 w-12 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                  />
                 </svg>
-                <h3 className="mt-2 text-sm font-medium text-gray-900">No orders yet</h3>
+                <h3 className="mt-2 text-sm font-medium text-gray-900">
+                  No orders yet
+                </h3>
                 <p className="mt-1 text-sm text-gray-500">
                   Start shopping to see your orders here.
                 </p>
@@ -265,8 +322,8 @@ const OrdersPage = () => {
           )}
         </div>
       </main>
-      
-      <Footer />
+
+      {/* <Footer /> */}
     </div>
   );
 };

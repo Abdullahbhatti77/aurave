@@ -37,7 +37,11 @@ const AuthContext = createContext<AuthContextType>({
   logout: async () => {},
 });
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  return context;
+};
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -46,43 +50,57 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const { data: session, status } = useSession();
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (session?.user) {
-      const mappedUser: User = {
-        id: (session.user as any).id,
-        name: session.user.name || "",
-        email: session.user.email || "",
-        role: (session.user as any).role || "user",
-      };
-      setUser(mappedUser);
+    // console.log("Session status:", status, "Session data:", session); // Debug
+    if (status === "loading") {
+      setIsLoading(true);
     } else {
-      setUser(null);
+      setIsLoading(false);
+      if (session?.user) {
+        const mappedUser: User = {
+          id: (session.user as any).id || "",
+          name: session.user.name || "Unknown",
+          email: session.user.email || "",
+          role: (session.user as any).role || "user",
+        };
+        setUser(mappedUser);
+      } else {
+        setUser(null);
+      }
     }
-  }, [session]);
+  }, [session, status]);
 
   const login = async (email: string, password: string) => {
-    const res = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
-
-    if (res?.ok) {
-      return { success: true };
-    } else {
-      return { success: false, error: res?.error || "Login failed" };
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+      if (res?.ok) {
+        return { success: true };
+      } else {
+        return { success: false, error: res?.error || "Login failed" };
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      return { success: false, error: "An unexpected error occurred" };
     }
   };
 
   const logout = async () => {
-    await signOut({ redirect: false });
-    setUser(null);
+    try {
+      await signOut({ redirect: false });
+      setUser(null);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
-  const isAuthenticated = !!user;
+  const isAuthenticated = !!user && status === "authenticated";
   const isAdmin = user?.role === "admin";
-  const isLoading = status === "loading";
 
   return (
     <AuthContext.Provider
