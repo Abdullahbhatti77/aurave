@@ -1,5 +1,5 @@
 // aurave-project/app/api/cart/route.ts
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 let cart: any[] = [];
 
@@ -8,22 +8,28 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { productId, quantity } = await req.json();
+  const {
+    productId,
+    quantity = 1,
+    name,
+    price,
+    originalPrice,
+    image,
+  } = await req.json();
 
-  const existingIndex = cart.findIndex(item => item.productId === productId);
+  const existingIndex = cart.findIndex((item) => item.productId === productId);
 
   if (existingIndex >= 0) {
-    cart[existingIndex].quantity += quantity || 1;
+    cart[existingIndex].quantity += quantity;
   } else {
-    // Simulate fetching product details — replace with real product data
     const productData = {
       id: `${Date.now()}`,
       productId,
-      name: `Product ${productId}`,
-      price: 1200,
-      originalPrice: 1500,
-      image: '/placeholder.png',
-      quantity: quantity || 1,
+      name,
+      price,
+      originalPrice,
+      image,
+      quantity,
     };
     cart.push(productData);
   }
@@ -34,16 +40,16 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
   const { id, quantity } = await req.json();
 
-  cart = cart.map(item => item.id === id ? { ...item, quantity } : item);
+  cart = cart.map((item) => (item.id === id ? { ...item, quantity } : item));
 
   return NextResponse.json({ cart });
 }
 
 export async function DELETE(req: Request) {
   const url = new URL(req.url);
-  const id = url.searchParams.get('id');
+  const id = url.searchParams.get("id");
 
-  cart = cart.filter(item => item.id !== id);
+  cart = cart.filter((item) => item.id !== id);
 
   return NextResponse.json({ cart });
 }

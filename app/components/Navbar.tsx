@@ -6,6 +6,7 @@ import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 interface Suggestion {
   id: string;
@@ -17,6 +18,7 @@ const Navbar = () => {
   const { itemCount } = useCart();
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -147,16 +149,24 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center space-x-6">
-          {["Home", "Products", "About"].map((label) => (
-            <Link
-              key={label}
-              href={label === "Home" ? "/" : `/${label.toLowerCase()}`}
-              className="text-gray-700 hover:text-pink-600 transition text-sm font-semibold"
-            >
-              {label}
-            </Link>
-          ))}
+        <div className="hidden md:flex items-center space-x-10">
+          {["Home", "Products", "About"].map((label) => {
+            const href = label === "Home" ? "/" : `/${label.toLowerCase()}`;
+            const isActive = pathname === href;
+            return (
+              <Link
+                key={label}
+                href={href}
+                className={`text-sm font-semibold transition ${
+                  isActive
+                    ? "text-[#c5a982] border-b-2 border-[#b89b71]"
+                    : "text-gray-700 hover:text-[#c5a982]"
+                }`}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Search + Icons */}
@@ -378,16 +388,24 @@ const Navbar = () => {
 
           {/* Sidebar Links */}
           <div className="flex flex-col p-4 space-y-2">
-            {["Home", "Products", "About"].map((label) => (
-              <Link
-                key={label}
-                href={label === "Home" ? "/" : `/${label.toLowerCase()}`}
-                className="block px-4 py-2 hover:bg-gray-100 rounded-md"
-                onClick={() => setOpenSidebar(false)}
-              >
-                {label}
-              </Link>
-            ))}
+            {["Home", "Products", "About"].map((label) => {
+              const href = label === "Home" ? "/" : `/${label.toLowerCase()}`;
+              const isActive = pathname === href;
+              return (
+                <Link
+                  key={label}
+                  href={href}
+                  className={`block px-4 py-2 rounded-md ${
+                    isActive
+                      ? "text-red-600 font-semibold"
+                      : "hover:bg-gray-100"
+                  }`}
+                  onClick={() => setOpenSidebar(false)}
+                >
+                  {label}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

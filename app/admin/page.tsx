@@ -3,8 +3,8 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+// import Navbar from "../components/Navbar";
+// import Footer from "../components/Footer";
 
 interface Product {
   id: string;
@@ -187,12 +187,12 @@ const AdminDashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
+      <div className="pt-20">
+        {/* <Navbar /> */}
         <main className="flex-grow flex items-center justify-center">
           <p className="text-gray-600">Loading...</p>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
@@ -200,9 +200,8 @@ const AdminDashboard = () => {
   if (!isAuthenticated || !isAdmin) return null;
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow py-10 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div className="pt-20">
+      <main className="flex-grow py-10 px-4 sm:px-6 lg:px-8 bg-[#fcfaf8]">
         <div className="max-w-7xl mx-auto">
           <div className="pb-5 border-b border-gray-200 flex justify-between items-center">
             <h1 className="text-3xl font-bold text-gray-900">
@@ -218,7 +217,7 @@ const AdminDashboard = () => {
                 className={`${
                   activeTab === "products"
                     ? "border-pink-500 text-pink-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 cursor-pointer"
                 } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
               >
                 Products
@@ -228,7 +227,7 @@ const AdminDashboard = () => {
                 className={`${
                   activeTab === "users"
                     ? "border-pink-500 text-pink-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 cursor-pointer"
                 } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
               >
                 Users
@@ -249,137 +248,229 @@ const AdminDashboard = () => {
                       </h2>
                       <button
                         onClick={() => setShowAddForm(!showAddForm)}
-                        className="bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700"
+                        className="bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700 cursor-pointer"
                       >
                         {showAddForm ? "Close Form" : "Add New Product"}
                       </button>
                     </div>
 
                     {showAddForm && (
-                      <div className="bg-white p-4 border rounded-md shadow-sm mb-6 space-y-4">
-                        <input
-                          type="text"
-                          placeholder="Product Name"
-                          className="border p-2 w-full"
-                          value={newProduct.name}
-                          onChange={(e) =>
-                            setNewProduct({
-                              ...newProduct,
-                              name: e.target.value,
-                            })
-                          }
-                        />
-                        <textarea
-                          placeholder="Description"
-                          className="border p-2 w-full"
-                          value={newProduct.description}
-                          onChange={(e) =>
-                            setNewProduct({
-                              ...newProduct,
-                              description: e.target.value,
-                            })
-                          }
-                        />
-                        <input
-                          type="number"
-                          placeholder="Price (PKR)"
-                          className="border p-2 w-full"
-                          value={newProduct.price}
-                          onChange={(e) =>
-                            setNewProduct({
-                              ...newProduct,
-                              price: Number(e.target.value),
-                            })
-                          }
-                        />
-                        <input
-                          type="number"
-                          placeholder="Original Price (PKR)"
-                          className="border p-2 w-full"
-                          value={newProduct.originalPrice}
-                          onChange={(e) =>
-                            setNewProduct({
-                              ...newProduct,
-                              originalPrice: Number(e.target.value),
-                              savings:
-                                Number(e.target.value) -
-                                Number(newProduct.price),
-                            })
-                          }
-                        />
-                        <input
-                          type="text"
-                          placeholder="Savings (PKR)"
-                          className="border p-2 w-full bg-gray-100"
-                          value={newProduct.savings}
-                          readOnly
-                        />
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleUploadFile(e, false)}
-                          className="border p-2 w-full"
-                        />
-                        {newProduct.image && (
-                          <img
-                            src={newProduct.image}
-                            alt="Preview"
-                            className="w-24 h-24 object-cover"
-                          />
-                        )}
-                        <input
-                          type="number"
-                          placeholder="Rating (0-5)"
-                          className="border p-2 w-full"
-                          value={newProduct.rating}
-                          onChange={(e) =>
-                            setNewProduct({
-                              ...newProduct,
-                              rating: Number(e.target.value),
-                            })
-                          }
-                        />
-                        <input
-                          type="number"
-                          placeholder="Review Count"
-                          className="border p-2 w-full"
-                          value={newProduct.reviewCount}
-                          onChange={(e) =>
-                            setNewProduct({
-                              ...newProduct,
-                              reviewCount: Number(e.target.value),
-                            })
-                          }
-                        />
-                        <input
-                          type="text"
-                          placeholder="Category"
-                          className="border p-2 w-full"
-                          value={newProduct.category}
-                          onChange={(e) =>
-                            setNewProduct({
-                              ...newProduct,
-                              category: e.target.value,
-                            })
-                          }
-                        />
-                        <label className="flex items-center space-x-2">
+                      <div className="bg-[#fdf6f0] p-4 border rounded-md shadow-sm mb-6 space-y-4">
+                        <div>
+                          <label
+                            htmlFor="product-name"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Product Name
+                          </label>
                           <input
-                            type="checkbox"
-                            checked={newProduct.featured}
+                            id="product-name"
+                            type="text"
+                            placeholder="Enter product name"
+                            className="border p-2 w-full rounded-md"
+                            value={newProduct.name}
                             onChange={(e) =>
                               setNewProduct({
                                 ...newProduct,
-                                featured: e.target.checked,
+                                name: e.target.value,
                               })
                             }
-                            className="h-5 w-5"
                           />
-                          <span>Featured Product</span>
-                        </label>
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="product-description"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Description
+                          </label>
+                          <textarea
+                            id="product-description"
+                            placeholder="Enter product description"
+                            className="border p-2 w-full rounded-md"
+                            value={newProduct.description}
+                            onChange={(e) =>
+                              setNewProduct({
+                                ...newProduct,
+                                description: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="product-price"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Price (PKR)
+                          </label>
+                          <input
+                            id="product-price"
+                            type="number"
+                            min="0"
+                            placeholder="Enter price"
+                            className="border p-2 w-full rounded-md"
+                            value={newProduct.price}
+                            onChange={(e) =>
+                              setNewProduct({
+                                ...newProduct,
+                                price: Number(e.target.value),
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="product-original-price"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Original Price (PKR)
+                          </label>
+                          <input
+                            id="product-original-price"
+                            type="number"
+                            min="0"
+                            placeholder="Enter original price"
+                            className="border p-2 w-full rounded-md"
+                            value={newProduct.originalPrice}
+                            onChange={(e) =>
+                              setNewProduct({
+                                ...newProduct,
+                                originalPrice: Number(e.target.value),
+                                savings:
+                                  Number(e.target.value) -
+                                  Number(newProduct.price),
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="product-savings"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Savings (PKR)
+                          </label>
+                          <input
+                            id="product-savings"
+                            type="text"
+                            min="0"
+                            placeholder="Savings (auto-calculated)"
+                            className="border p-2 w-full bg-gray-100 rounded-md"
+                            value={newProduct.savings}
+                            readOnly
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="product-image"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Product Image
+                          </label>
+                          <input
+                            id="product-image"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleUploadFile(e, false)}
+                            className="border p-2 w-full rounded-md"
+                          />
+                          {newProduct.image && (
+                            <img
+                              src={newProduct.image}
+                              alt="Preview"
+                              className="w-24 h-24 object-cover mt-2 rounded"
+                            />
+                          )}
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="product-rating"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Rating (0–5)
+                          </label>
+                          <input
+                            id="product-rating"
+                            type="number"
+                            min="0"
+                            max="5"
+                            step="1"
+                            placeholder="Enter rating (0–5)"
+                            className="border p-2 w-full rounded-md"
+                            value={newProduct.rating}
+                            onChange={(e) => {
+                              const value = Number(e.target.value);
+                              if (value >= 0 && value <= 5) {
+                                setNewProduct({ ...newProduct, rating: value });
+                              }
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="product-review-count"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Review Count
+                          </label>
+                          <input
+                            id="product-review-count"
+                            type="number"
+                            min="0"
+                            placeholder="Enter review count"
+                            className="border p-2 w-full rounded-md"
+                            value={newProduct.reviewCount}
+                            onChange={(e) =>
+                              setNewProduct({
+                                ...newProduct,
+                                reviewCount: Number(e.target.value),
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="product-category"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Category
+                          </label>
+                          <input
+                            id="product-category"
+                            type="text"
+                            placeholder="Enter category"
+                            className="border p-2 w-full rounded-md"
+                            value={newProduct.category}
+                            onChange={(e) =>
+                              setNewProduct({
+                                ...newProduct,
+                                category: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              checked={newProduct.featured}
+                              onChange={(e) =>
+                                setNewProduct({
+                                  ...newProduct,
+                                  featured: e.target.checked,
+                                })
+                              }
+                              className="h-5 w-5"
+                            />
+                            <span className="text-sm font-medium text-gray-700">
+                              Featured Product
+                            </span>
+                          </label>
+                        </div>
                         <button
                           onClick={handleAddProduct}
-                          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50"
+                          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50 cursor-pointer"
                           disabled={loadingAction}
                         >
                           {loadingAction ? "Adding..." : "Submit"}
@@ -389,140 +480,235 @@ const AdminDashboard = () => {
 
                     {editingProduct && (
                       <div className="bg-yellow-50 p-4 border rounded-md shadow-sm mb-6 space-y-4">
-                        <input
-                          type="text"
-                          placeholder="Product Name"
-                          className="border p-2 w-full"
-                          value={editingProduct.name}
-                          onChange={(e) =>
-                            setEditingProduct({
-                              ...editingProduct,
-                              name: e.target.value,
-                            })
-                          }
-                        />
-                        <textarea
-                          placeholder="Description"
-                          className="border p-2 w-full"
-                          value={editingProduct.description}
-                          onChange={(e) =>
-                            setEditingProduct({
-                              ...editingProduct,
-                              description: e.target.value,
-                            })
-                          }
-                        />
-                        <input
-                          type="number"
-                          placeholder="Price (PKR)"
-                          className="border p-2 w-full"
-                          value={editingProduct.price}
-                          onChange={(e) =>
-                            setEditingProduct({
-                              ...editingProduct,
-                              price: Number(e.target.value),
-                              savings:
-                                Number(editingProduct.originalPrice) -
-                                Number(e.target.value),
-                            })
-                          }
-                        />
-                        <input
-                          type="number"
-                          placeholder="Original Price (PKR)"
-                          className="border p-2 w-full"
-                          value={editingProduct.originalPrice}
-                          onChange={(e) =>
-                            setEditingProduct({
-                              ...editingProduct,
-                              originalPrice: Number(e.target.value),
-                              savings:
-                                Number(e.target.value) -
-                                Number(editingProduct.price),
-                            })
-                          }
-                        />
-                        <input
-                          type="text"
-                          placeholder="Savings (PKR)"
-                          className="border p-2 w-full bg-gray-100"
-                          value={editingProduct.savings}
-                          readOnly
-                        />
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleUploadFile(e, true)}
-                          className="border p-2 w-full"
-                        />
-                        {editingProduct.image && (
-                          <img
-                            src={editingProduct.image}
-                            alt="Preview"
-                            className="w-24 h-24 object-cover"
-                          />
-                        )}
-                        <input
-                          type="number"
-                          placeholder="Rating (0-5)"
-                          className="border p-2 w-full"
-                          value={editingProduct.rating}
-                          onChange={(e) =>
-                            setEditingProduct({
-                              ...editingProduct,
-                              rating: Number(e.target.value),
-                            })
-                          }
-                        />
-                        <input
-                          type="number"
-                          placeholder="Review Count"
-                          className="border p-2 w-full"
-                          value={editingProduct.reviewCount}
-                          onChange={(e) =>
-                            setEditingProduct({
-                              ...editingProduct,
-                              reviewCount: Number(e.target.value),
-                            })
-                          }
-                        />
-                        <input
-                          type="text"
-                          placeholder="Category"
-                          className="border p-2 w-full"
-                          value={editingProduct.category}
-                          onChange={(e) =>
-                            setEditingProduct({
-                              ...editingProduct,
-                              category: e.target.value,
-                            })
-                          }
-                        />
-                        <label className="flex items-center space-x-2">
+                        <div>
+                          <label
+                            htmlFor="edit-product-name"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Product Name
+                          </label>
                           <input
-                            type="checkbox"
-                            checked={editingProduct.featured}
+                            id="edit-product-name"
+                            type="text"
+                            placeholder="Enter product name"
+                            className="border p-2 w-full rounded-md"
+                            value={editingProduct.name}
                             onChange={(e) =>
                               setEditingProduct({
                                 ...editingProduct,
-                                featured: e.target.checked,
+                                name: e.target.value,
                               })
                             }
-                            className="h-5 w-5"
                           />
-                          <span>Featured Product</span>
-                        </label>
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="edit-product-description"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Description
+                          </label>
+                          <textarea
+                            id="edit-product-description"
+                            placeholder="Enter product description"
+                            className="border p-2 w-full rounded-md"
+                            value={editingProduct.description}
+                            onChange={(e) =>
+                              setEditingProduct({
+                                ...editingProduct,
+                                description: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="edit-product-price"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Price (PKR)
+                          </label>
+                          <input
+                            id="edit-product-price"
+                            type="number"
+                            min="0"
+                            placeholder="Enter price"
+                            className="border p-2 w-full rounded-md"
+                            value={editingProduct.price}
+                            onChange={(e) =>
+                              setEditingProduct({
+                                ...editingProduct,
+                                price: Number(e.target.value),
+                                savings:
+                                  Number(editingProduct.originalPrice) -
+                                  Number(e.target.value),
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="edit-product-original-price"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Original Price (PKR)
+                          </label>
+                          <input
+                            id="edit-product-original-price"
+                            type="number"
+                            min="0"
+                            placeholder="Enter original price"
+                            className="border p-2 w-full rounded-md"
+                            value={editingProduct.originalPrice}
+                            onChange={(e) =>
+                              setEditingProduct({
+                                ...editingProduct,
+                                originalPrice: Number(e.target.value),
+                                savings:
+                                  Number(e.target.value) -
+                                  Number(editingProduct.price),
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="edit-product-savings"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Savings (PKR)
+                          </label>
+                          <input
+                            id="edit-product-savings"
+                            type="text"
+                            min="0"
+                            placeholder="Savings (auto-calculated)"
+                            className="border p-2 w-full bg-gray-100 rounded-md"
+                            value={editingProduct.savings}
+                            readOnly
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="edit-product-image"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Product Image
+                          </label>
+                          <input
+                            id="edit-product-image"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleUploadFile(e, true)}
+                            className="border p-2 w-full rounded-md"
+                          />
+                          {editingProduct.image && (
+                            <img
+                              src={editingProduct.image}
+                              alt="Preview"
+                              className="w-24 h-24 object-cover mt-2 rounded"
+                            />
+                          )}
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="edit-product-rating"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Rating (0–5)
+                          </label>
+                          <input
+                            id="edit-product-rating"
+                            type="number"
+                            min="0"
+                            max="5"
+                            step="1"
+                            placeholder="Enter rating (0–5)"
+                            className="border p-2 w-full rounded-md"
+                            value={editingProduct.rating}
+                            onChange={(e) => {
+                              const value = Number(e.target.value);
+                              if (value >= 0 && value <= 5) {
+                                setEditingProduct({
+                                  ...editingProduct,
+                                  rating: value,
+                                });
+                              }
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="edit-product-review-count"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Review Count
+                          </label>
+                          <input
+                            id="edit-product-review-count"
+                            type="number"
+                            min="0"
+                            placeholder="Enter review count"
+                            className="border p-2 w-full rounded-md"
+                            value={editingProduct.reviewCount}
+                            onChange={(e) =>
+                              setEditingProduct({
+                                ...editingProduct,
+                                reviewCount: Number(e.target.value),
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="edit-product-category"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Category
+                          </label>
+                          <input
+                            id="edit-product-category"
+                            type="text"
+                            placeholder="Enter category"
+                            className="border p-2 w-full rounded-md"
+                            value={editingProduct.category}
+                            onChange={(e) =>
+                              setEditingProduct({
+                                ...editingProduct,
+                                category: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              checked={editingProduct.featured}
+                              onChange={(e) =>
+                                setEditingProduct({
+                                  ...editingProduct,
+                                  featured: e.target.checked,
+                                })
+                              }
+                              className="h-5 w-5"
+                            />
+                            <span className="text-sm font-medium text-gray-700">
+                              Featured Product
+                            </span>
+                          </label>
+                        </div>
                         <div className="flex gap-4">
                           <button
                             onClick={handleEditProduct}
-                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+                            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50 cursor-pointer"
                             disabled={loadingAction}
                           >
                             {loadingAction ? "Updating..." : "Save Changes"}
                           </button>
                           <button
                             onClick={() => setEditingProduct(null)}
-                            className="text-gray-500 underline"
+                            className="text-gray-500 underline cursor-pointer"
                           >
                             Cancel
                           </button>
@@ -530,97 +716,117 @@ const AdminDashboard = () => {
                       </div>
                     )}
 
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-gray-200 bg-white rounded shadow-sm">
-                        <thead className="bg-gray-50">
-                          <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                              Name
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                              Price
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                              Orig. Price
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                              Savings
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                              Category
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                              Rating
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                              Reviews
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                              Featured
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                              Image
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                              Actions
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-200">
-                          {products.map((product) => (
-                            <tr key={product.id}>
-                              <td className="px-6 py-4">{product.name}</td>
-                              <td className="px-6 py-4">PKR {product.price}</td>
-                              <td className="px-6 py-4">
-                                PKR {product.originalPrice}
-                              </td>
-                              <td className="px-6 py-4">
-                                PKR {product.savings}
-                              </td>
-                              <td className="px-6 py-4">{product.category}</td>
-                              <td className="px-6 py-4">{product.rating}</td>
-                              <td className="px-6 py-4">
-                                {product.reviewCount}
-                              </td>
-                              <td className="px-6 py-4">
-                                {product.featured ? (
-                                  <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
-                                    Yes
-                                  </span>
-                                ) : (
-                                  "No"
-                                )}
-                              </td>
-                              <td className="px-6 py-4">
-                                {product.image && (
-                                  <img
-                                    src={product.image}
-                                    alt={product.name}
-                                    className="w-12 h-12 object-cover rounded"
-                                  />
-                                )}
-                              </td>
-                              <td className="px-6 py-4 flex gap-4">
-                                <button
-                                  onClick={() => setEditingProduct(product)}
-                                  className="text-blue-600 hover:text-blue-800"
-                                >
-                                  Edit
-                                </button>
-                                <button
-                                  onClick={() =>
-                                    handleDeleteProduct(product.id)
-                                  }
-                                  className="text-red-600 hover:text-red-800"
-                                >
-                                  Delete
-                                </button>
-                              </td>
+                    {products.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center py-10">
+                        {/* <img
+                          src="https://images.unsplash.com/photo-1634323741467-8272d2b6e14f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+                          alt="No products found"
+                          className="w-48 h-48 object-cover mb-4"
+                        /> */}
+                        <p className="text-lg font-medium text-gray-600">
+                          No products found
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          Add a new product to get started!
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200 bg-white rounded shadow-sm">
+                          <thead className="bg-gray-50">
+                            <tr>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                Name
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                Price
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                Orig. Price
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                Savings
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                Category
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                Rating
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                Reviews
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                Featured
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                Image
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                Actions
+                              </th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                          </thead>
+                          <tbody className="divide-y divide-gray-200">
+                            {products.map((product) => (
+                              <tr key={product.id}>
+                                <td className="px-6 py-4">{product.name}</td>
+                                <td className="px-6 py-4">
+                                  PKR {product.price}
+                                </td>
+                                <td className="px-6 py-4">
+                                  PKR {product.originalPrice}
+                                </td>
+                                <td className="px-6 py-4">
+                                  PKR {product.savings}
+                                </td>
+                                <td className="px-6 py-4">
+                                  {product.category}
+                                </td>
+                                <td className="px-6 py-4">{product.rating}</td>
+                                <td className="px-6 py-4">
+                                  {product.reviewCount}
+                                </td>
+                                <td className="px-6 py-4">
+                                  {product.featured ? (
+                                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
+                                      Yes
+                                    </span>
+                                  ) : (
+                                    "No"
+                                  )}
+                                </td>
+                                <td className="px-6 py-4">
+                                  {product.image && (
+                                    <img
+                                      src={product.image}
+                                      alt={product.name}
+                                      className="w-12 h-12 object-cover rounded"
+                                    />
+                                  )}
+                                </td>
+                                <td className="px-6 py-4 flex gap-4">
+                                  <button
+                                    onClick={() => setEditingProduct(product)}
+                                    className="text-blue-600 hover:text-blue-800 cursor-pointer"
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleDeleteProduct(product.id)
+                                    }
+                                    className="text-red-600 hover:text-red-800 cursor-pointer"
+                                  >
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -639,7 +845,6 @@ const AdminDashboard = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

@@ -115,7 +115,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen text-stone-800 dark:text-rose-100">
-      <section className="relative overflow-hidden py-24 md:py-32 hero-bg-light dark:hero-bg-dark">
+      <section className="relative overflow-hidden py-40 md:py-32 hero-bg-light dark:hero-bg-dark">
         <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-amber-500/10 to-transparent dark:from-rose-900/20 dark:via-amber-800/20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -359,7 +359,7 @@ const HomePage = () => {
               <Button
                 variant="outline"
                 size="xl"
-                className="button-outline-themed rounded-full px-10 py-4 text-lg font-semibold shadow-sm"
+                className="button-outline-themed rounded-full px-10 py-4 text-lg font-semibold shadow-sm cursor-pointer"
               >
                 Explore All Products
                 <ArrowRight className="ml-2 h-5 w-5" />

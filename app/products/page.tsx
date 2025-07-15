@@ -11,7 +11,7 @@ import { Star, Filter, Grid, List, X, Search, ChevronDown } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { Button } from "../components/ui/button";
 // import { useToast } from "@/components/ui/use-toast";
-// import { Slider } from "@/components/ui/slider";
+import { Slider } from "../components/ui/slider";
 
 interface Product {
   id: string;
@@ -45,7 +45,7 @@ const ProductsPage = () => {
   // const { toast } = useToast();
 
   const allCategories = [
-    { id: "serums", name: "Serums" },
+    { id: "serum", name: "Serums" },
     { id: "moisturizers", name: "Moisturizers" },
     { id: "cleansers", name: "Cleansers" },
     { id: "masks", name: "Masks" },
@@ -116,12 +116,13 @@ const ProductsPage = () => {
   }, [products, selectedCategories, priceRange, sortBy, searchTerm]);
 
   const handleAddToCart = (product: Product) => {
-    addToCart(product.id);
-    // toast({
-    //   title: "Added to Cart!",
-    //   description: `${product.name} has been added to your cart.`,
-    //   className: "bg-rose-500 text-white border-0",
-    // });
+    console.log("Adding to cart:", product);
+    addToCart(product.id, 1, {
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      originalPrice: product.originalPrice,
+    });
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,7 +162,7 @@ const ProductsPage = () => {
         <h2 className="text-2xl font-bold text-stone-800">Filters</h2>
         <button
           onClick={() => setIsFiltersOpen(false)}
-          className="text-stone-600 hover:text-stone-800"
+          className="text-stone-600 hover:text-stone-800 cursor-pointer"
         >
           <X className="h-6 w-6" />
         </button>
@@ -194,14 +195,14 @@ const ProductsPage = () => {
           <h3 className="text-lg font-semibold text-stone-700 mb-3">
             Price Range
           </h3>
-          {/* <Slider
+          <Slider
             min={0}
             max={maxPrice}
             step={100}
             value={priceRange}
             onValueChange={setPriceRange}
             className="[&>span:first-child]:h-1 [&>span:first-child>span]:bg-rose-500 [&>span:nth-child(2)>span]:bg-rose-500 [&>span:nth-child(3)>span]:bg-rose-500"
-          /> */}
+          />
           <div className="flex justify-between text-sm text-stone-600 mt-2">
             <span>{formatPrice(priceRange[0])}</span>
             <span>{formatPrice(priceRange[1])}</span>
@@ -210,7 +211,7 @@ const ProductsPage = () => {
       </div>
       <button
         onClick={() => setIsFiltersOpen(false)}
-        className="w-full mt-8 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white font-semibold py-3 rounded-full transition-colors"
+        className="w-full mt-8 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white font-semibold py-3 rounded-full transition-colors cursor-pointer"
       >
         Apply Filters
       </button>
@@ -218,7 +219,7 @@ const ProductsPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-100 via-rose-50 to-amber-100 py-8 md:pt-32 md:pb-12">
+    <div className="min-h-screen bg-gradient-to-br from-stone-100 via-rose-50 to-amber-100 py-40 md:pt-32 md:pb-12">
       {/* <Navbar /> */}
       <main className="flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -241,7 +242,7 @@ const ProductsPage = () => {
             <div className="flex items-center gap-2 w-full lg:w-auto">
               <button
                 onClick={() => setIsFiltersOpen(true)}
-                className="border border-rose-300 rounded-full px-5 py-2.5 text-sm font-medium text-stone-600 hover:bg-rose-100 shadow-sm"
+                className="border border-[#f43f5e] rounded-full px-5 py-2.5 text-sm font-medium text-[#f43f5e] hover:bg-rose-100 cursor-pointer"
               >
                 <Filter className="h-4 w-4 mr-2 inline" />
                 Filters
@@ -418,7 +419,7 @@ const ProductsPage = () => {
                         disabled={isLoading}
                         className="cursor-pointer w-full button-primary-gradient rounded-full py-2.5 text-sm font-semibold"
                       >
-                        {isLoading ? "Adding..." : "Add to Cart"}
+                        {isLoading ? "Adding..." : "Add to Cartaa"}
                       </Button>
                     </div>
                   </div>
@@ -447,7 +448,7 @@ const ProductsPage = () => {
                   setSortBy("featured");
                   router.push("?");
                 }}
-                className="border border-rose-300 rounded-full px-6 py-2.5 text-sm font-medium text-stone-600 hover:bg-rose-100"
+                className="border border-rose-300 rounded-full px-6 py-2.5 text-sm font-medium text-stone-600 hover:bg-rose-100 cursor-pointer"
               >
                 Clear Filters
               </button>
@@ -464,7 +465,7 @@ const ProductsPage = () => {
             <Button
               variant="outline"
               size="lg"
-              className="button-outline-themed rounded-full px-8 py-3 text-lg font-semibold shadow-sm"
+              className="button-outline-themed rounded-full px-8 py-3 text-lg font-semibold shadow-sm cursor-pointer"
             >
               Load More Products
             </Button>

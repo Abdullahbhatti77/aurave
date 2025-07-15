@@ -72,7 +72,7 @@ const AboutPage = () => {
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative py-20 md:py-32 text-center hero-bg-light dark:hero-bg-dark"
+        className="relative pb-20 pt-48 md:py-32 text-center hero-bg-light dark:hero-bg-dark"
       >
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-stone-100 dark:to-stone-900 opacity-50"></div>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
