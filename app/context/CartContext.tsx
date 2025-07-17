@@ -7,6 +7,8 @@ import {
   useEffect,
   ReactNode,
 } from "react";
+import ReactPixel from "react-facebook-pixel";
+import getUserCity from "../helpers/getUserCity";
 
 interface CartItem {
   id: string;
@@ -16,6 +18,7 @@ interface CartItem {
   originalPrice: number;
   image: string;
   quantity: number;
+  category?: string;
 }
 
 interface CartContextType {
@@ -35,6 +38,7 @@ interface CartContextType {
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
+const city = await getUserCity();
 
 export function useCart() {
   const context = useContext(CartContext);
@@ -99,12 +103,32 @@ export function CartProvider({ children }: CartProviderProps) {
         body: JSON.stringify({
           productId,
           quantity,
-          ...meta, // send extra info to backend
+          ...meta,
         }),
       });
 
       const data = await response.json();
       setCartItems(data.cart || []);
+      // console.log("Cart updated:", data?.cart);
+      // Fire Meta Pixel AddToCart event
+      ReactPixel.track("AddToCart", {
+        content_ids: [productId],
+        content_type: "product",
+        value: data.cart.reduce(
+          (total: number, item: CartItem) => total + item.price * item.quantity,
+          0
+        ),
+        contents: data.cart.map((item: CartItem) => ({
+          id: item.productId,
+          quantity: item.quantity,
+          item_price: item.price,
+        })),
+        content_name: meta?.name || "Product",
+        content_category: meta?.category || "General",
+        currency: "PKR",
+        city: city ?? undefined,
+        quantity: quantity,
+      });
     } catch (err) {
       // ...
     } finally {
