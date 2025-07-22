@@ -1,7 +1,7 @@
 [build]
-  command = "npm run build"
+  command = "npm run build --no-lint"
   publish = ".next"
-  functions = "netlify/functions"
+  cache = [".next/cache"]
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

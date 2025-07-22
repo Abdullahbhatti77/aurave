@@ -1,8 +1,6 @@
-import type { NextConfig } from "next";
-
-// const nextConfig: NextConfig = {
-// };
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: "standalone", // Optimize for Netlify by generating a standalone build
   images: {
     remotePatterns: [
       {
@@ -11,8 +9,14 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
-    domains: ["images.unsplash.com"],
   },
 };
+
 export default nextConfig;

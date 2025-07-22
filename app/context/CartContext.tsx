@@ -38,7 +38,20 @@ interface CartContextType {
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
-const city = await getUserCity();
+const [city, setCity] = useState<string | null>(null); // State for city
+// const city = await getUserCity();
+// Fetch city on mount
+useEffect(() => {
+  async function fetchCity() {
+    try {
+      const userCity = await getUserCity();
+      setCity(userCity);
+    } catch (err) {
+      console.error("Error fetching city:", err);
+    }
+  }
+  fetchCity();
+}, []);
 
 export function useCart() {
   const context = useContext(CartContext);
