@@ -2,12 +2,12 @@ import clientPromise from "../../../lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 
-// ✅ Corrected PUT Handler
+// PUT handler
 export async function PUT(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = context.params;
+  const { id } = params;
   const body = await req.json();
   const {
     name,
@@ -59,12 +59,12 @@ export async function PUT(
   return NextResponse.json({ message: "Updated" });
 }
 
-// ✅ Corrected DELETE Handler
+// DELETE handler
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = context.params;
+  const { id } = params;
   const client = await clientPromise;
   const db = client.db("aurave");
 
