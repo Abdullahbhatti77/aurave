@@ -118,13 +118,13 @@ export function CartProvider({ children }: CartProviderProps) {
           (total: number, item: CartItem) => total + item.price * item.quantity,
           0
         ),
-        contents: data.cart.map((item: CartItem) => ({
-          id: item.productId,
-          quantity: item.quantity,
-          item_price: item.price,
-        })),
+        // contents: data.cart.map((item: CartItem) => ({
+        //   id: item.productId,
+        //   quantity: item.quantity,
+        //   item_price: item.price,
+        // })),
         content_name: meta?.name || "Product",
-        content_category: meta?.category || "General",
+        // content_category: meta?.category || "General",
         currency: "PKR",
         city: city ?? undefined,
         quantity: quantity,

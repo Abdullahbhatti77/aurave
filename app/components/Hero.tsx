@@ -6,8 +6,9 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Star, Shield, Truck, Heart, Zap } from "lucide-react";
 import { Button } from "../components/ui/button";
-// import { useCart } from "@/contexts/CartContext";
-// import ReactPixel from "react-facebook-pixel";
+import { useCart } from "../context/CartContext";
+import ReactPixel from "react-facebook-pixel";
+import getUserCity from "../helpers/getUserCity";
 
 interface Product {
   id: string;
@@ -20,13 +21,20 @@ interface Product {
 }
 
 const HomePage = () => {
-  // const { addToCart } = useCart();
+  const { addToCart, isLoading } = useCart();
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [city, setCity] = useState<string | null>(null);
 
   // Meta Pixel PageView tracking
   // useEffect(() => {
   //   ReactPixel.track("PageView");
   // }, []);
+  // Fetch city on client
+  useEffect(() => {
+    getUserCity().then((city) => {
+      setCity(city);
+    });
+  }, []);
 
   // Fetch featured products from API
   useEffect(() => {
@@ -99,18 +107,20 @@ const HomePage = () => {
   ];
 
   const handleAddToCart = (product: Product) => {
-    // addToCart(product);
-    // ReactPixel.track("AddToCart", {
-    //   content_name: product.name,
-    //   content_ids: [product.id],
-    //   value: product.price,
-    //   currency: "PKR",
-    // });
-    // toast({
-    //   title: "Added to Cart!",
-    //   description: `${product.name} has been added to your cart.`,
-    //   className: "bg-rose-500 dark:bg-amber-600 text-white dark:text-stone-900 border-0",
-    // });
+    addToCart(product.id, 1, {
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      originalPrice: product.originalPrice,
+    });
+    // Optionally uncomment ReactPixel and toast for tracking and feedback
+    ReactPixel.track("AddToCart", {
+      content_name: product.name,
+      content_ids: [product.id],
+      value: product.price,
+      currency: "PKR",
+      city: city ?? undefined,
+    });
   };
 
   return (
@@ -339,9 +349,10 @@ const HomePage = () => {
 
                   <Button
                     onClick={() => handleAddToCart(product)}
-                    className="w-full mt-auto button-primary-gradient rounded-full py-3 text-md font-semibold"
+                    disabled={isLoading} // Add disabled state for better UX
+                    className="w-full mt-auto button-primary-gradient rounded-full py-3 text-md font-semibold cursor-pointer"
                   >
-                    Add to Cart
+                    {isLoading ? "Adding..." : "Add to Cart"}{" "}
                   </Button>
                 </div>
               </motion.div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -10,6 +10,8 @@ import Footer from "../components/Footer";
 import { useCart } from "../context/CartContext";
 import { CheckCircle, ShoppingBag } from "lucide-react";
 import { Button } from "../components/ui/button";
+import ReactPixel from "react-facebook-pixel";
+import getUserCity from "../helpers/getUserCity";
 
 interface ShippingInfo {
   email: "";
@@ -30,6 +32,7 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState<string>("cod");
   const [orderPlaced, setOrderPlaced] = useState<boolean>(false);
   const [orderNumber, setOrderNumber] = useState<string>("");
+  const [city, setCity] = useState<string | null>(null);
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
     email: "",
     firstName: "",
@@ -52,6 +55,12 @@ const CheckoutPage = () => {
   const total = subtotal + shipping + tax;
 
   const formatPrice = (price: number) => `PKR ${price.toLocaleString()}.00`;
+
+  useEffect(() => {
+    getUserCity().then((city) => {
+      setCity(city);
+    });
+  }, []);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -88,16 +97,36 @@ const CheckoutPage = () => {
       const randomOrderNumber = `ORD-${Math.floor(
         100000 + Math.random() * 900000
       )}`;
-      setOrderNumber(randomOrderNumber);
-      setOrderPlaced(true);
+      setOrderNumber(randomOrderNumber); // Still set it for UI
+      purchase(randomOrderNumber); // Pass it directly
+      // setOrderNumber(randomOrderNumber);
+      // purchase();
+      // setOrderPlaced(true);
       // clearCart();
-      setStep(3);
+      // setStep(3);
       // TODO: Save order in backend using API
     }
   };
 
   const handleContinueShopping = () => {
     router.push("/products");
+  };
+  const [hasTrackedPurchase, setHasTrackedPurchase] = useState(false);
+
+  const purchase = async (orderId: string) => {
+    if (hasTrackedPurchase) return;
+
+    ReactPixel.track("Purchase", {
+      value: total,
+      currency: "PKR",
+      city: city || "Unknown",
+      order_number: orderId,
+      payment_method: paymentMethod,
+    });
+
+    setHasTrackedPurchase(true);
+    setOrderPlaced(true);
+    setStep(3);
   };
 
   // Simplified CheckoutProgress component

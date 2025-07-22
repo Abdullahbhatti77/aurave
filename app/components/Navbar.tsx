@@ -7,6 +7,8 @@ import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
+import ReactPixel from "react-facebook-pixel";
+import getUserCity from "../helpers/getUserCity";
 
 interface Suggestion {
   id: string;
@@ -27,6 +29,7 @@ const Navbar = () => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
   const profileRef = useRef<HTMLDivElement>(null);
+  const [city, setCity] = useState<string | null>(null);
 
   // Scroll effect
   useEffect(() => {
@@ -34,6 +37,24 @@ const Navbar = () => {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  useEffect(() => {
+    getUserCity().then((city) => {
+      setCity(city);
+    });
+  }, []);
+  useEffect(() => {
+    if (!search.trim()) return;
+
+    const timeout = setTimeout(() => {
+      ReactPixel.track("Search", {
+        search_string: search,
+        content_category: "Products",
+        city: city ?? undefined,
+      });
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, [search]);
 
   // Fetch suggestions
   useEffect(() => {

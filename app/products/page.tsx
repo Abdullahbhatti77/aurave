@@ -12,6 +12,8 @@ import { useCart } from "../context/CartContext";
 import { Button } from "../components/ui/button";
 // import { useToast } from "@/components/ui/use-toast";
 import { Slider } from "../components/ui/slider";
+import ReactPixel from "react-facebook-pixel";
+import getUserCity from "../helpers/getUserCity";
 
 interface Product {
   id: string;
@@ -42,6 +44,7 @@ const ProductsPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { addToCart, isLoading } = useCart();
+  const [city, setCity] = useState<string | null>(null);
   // const { toast } = useToast();
 
   const allCategories = [
@@ -51,6 +54,12 @@ const ProductsPage = () => {
     { id: "masks", name: "Masks" },
     { id: "suncare", name: "Sun Care" },
   ];
+
+  useEffect(() => {
+    getUserCity().then((city) => {
+      setCity(city);
+    });
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -70,6 +79,19 @@ const ProductsPage = () => {
 
     fetchProducts();
   }, []);
+  useEffect(() => {
+    if (!searchTerm) return;
+
+    const timeout = setTimeout(() => {
+      ReactPixel.track("Search", {
+        search_string: searchTerm,
+        content_category: "Products",
+        city: city ?? undefined,
+      });
+    }, 1000); // Debounce for 1 seconds
+
+    return () => clearTimeout(timeout);
+  }, [searchTerm]);
 
   const maxPrice = useMemo(
     () => Math.max(...products.map((p) => p.price), 50000),
@@ -191,7 +213,7 @@ const ProductsPage = () => {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <h3 className="text-lg font-semibold text-stone-700 mb-3">
             Price Range
           </h3>
@@ -207,14 +229,14 @@ const ProductsPage = () => {
             <span>{formatPrice(priceRange[0])}</span>
             <span>{formatPrice(priceRange[1])}</span>
           </div>
-        </div>
+        </div> */}
       </div>
-      <button
+      {/* <button
         onClick={() => setIsFiltersOpen(false)}
         className="w-full mt-8 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white font-semibold py-3 rounded-full transition-colors cursor-pointer"
       >
         Apply Filters
-      </button>
+      </button> */}
     </motion.div>
   );
 
@@ -419,7 +441,7 @@ const ProductsPage = () => {
                         disabled={isLoading}
                         className="cursor-pointer w-full button-primary-gradient rounded-full py-2.5 text-sm font-semibold"
                       >
-                        {isLoading ? "Adding..." : "Add to Cartaa"}
+                        {isLoading ? "Adding..." : "Add to Cart"}
                       </Button>
                     </div>
                   </div>

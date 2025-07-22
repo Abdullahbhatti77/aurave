@@ -352,7 +352,7 @@ const CartPage = () => {
               </div>
               <div className="mt-6 space-y-3">
                 <Link href="/checkout" className="block">
-                  <button className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white py-3 rounded-full text-lg font-semibold">
+                  <button className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white py-3 rounded-full text-lg font-semibold cursor-pointer">
                     Proceed to Checkout
                   </button>
                 </Link>
