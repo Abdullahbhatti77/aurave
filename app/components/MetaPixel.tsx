@@ -1,27 +1,28 @@
-// components/FacebookPixel.tsx
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import ReactPixel from "react-facebook-pixel";
 
 const FacebookPixel = () => {
   const pathname = usePathname();
+  const [ReactPixel, setReactPixel] = useState<any>(null);
 
   useEffect(() => {
-    // Initialize Facebook Pixel
-    ReactPixel.init(process.env.NEXT_PUBLIC_META_PIXEL_ID!, undefined, {
-      autoConfig: true,
-      debug: false,
+    import("react-facebook-pixel").then((module) => {
+      module.default.init(process.env.NEXT_PUBLIC_META_PIXEL_ID!, undefined, {
+        autoConfig: true,
+        debug: false,
+      });
+      module.default.pageView();
+      setReactPixel(module.default);
     });
-
-    ReactPixel.pageView(); // initial page load
   }, []);
 
   useEffect(() => {
-    // Fire page view on route change
-    ReactPixel.pageView();
-  }, [pathname]);
+    if (ReactPixel) {
+      ReactPixel.pageView();
+    }
+  }, [pathname, ReactPixel]);
 
   return null;
 };

@@ -1,3 +1,4 @@
+"use client";
 import Hero from "./components/Hero";
 // import Features from "./components/Features";
 // import FeaturedProducts from "./components/FeaturedProducts";

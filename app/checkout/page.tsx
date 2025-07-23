@@ -114,15 +114,28 @@ const CheckoutPage = () => {
   const [hasTrackedPurchase, setHasTrackedPurchase] = useState(false);
 
   const purchase = async (orderId: string) => {
+    console.log("Purchase function called with orderId:", orderId);
     if (hasTrackedPurchase) return;
 
-    ReactPixel.track("Purchase", {
-      value: total,
-      currency: "PKR",
-      city: city || "Unknown",
-      order_number: orderId,
-      payment_method: paymentMethod,
-    });
+    // ReactPixel.track("Purchase", {
+    //   value: total,
+    //   currency: "PKR",
+    //   city: city || "Unknown",
+    //   order_number: orderId,
+    //   payment_method: paymentMethod,
+    // });
+    if (typeof window !== "undefined") {
+      const pixelModule = await import("react-facebook-pixel");
+      const ReactPixel = pixelModule.default;
+
+      ReactPixel.track("Purchase", {
+        value: total,
+        currency: "PKR",
+        city: city || "Unknown",
+        order_number: orderId,
+        payment_method: paymentMethod,
+      });
+    }
 
     setHasTrackedPurchase(true);
     setOrderPlaced(true);

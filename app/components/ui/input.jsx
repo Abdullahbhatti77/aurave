@@ -1,6 +1,6 @@
-
-import React from "react"
-import { cn } from "@/lib/utils"
+"use client";
+import React from "react";
+import { cn } from "@/lib/utils";
 
 const Input = React.forwardRef(({ className, type, ...props }, ref) => {
   return (
@@ -11,9 +11,10 @@ const Input = React.forwardRef(({ className, type, ...props }, ref) => {
         className
       )}
       ref={ref}
-      {...props} />
-  )
-})
-Input.displayName = "Input"
+      {...props}
+    />
+  );
+});
+Input.displayName = "Input";
 
-export { Input }
+export { Input };

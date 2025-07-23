@@ -1,6 +1,7 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: "standalone", // Optimize for Netlify by generating a standalone build
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  output: "standalone", // Optional: Useful for Vercel or other deployments
   images: {
     remotePatterns: [
       {
@@ -9,13 +10,8 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        port: "",
-        pathname: "/**",
-      },
     ],
+    domains: ["images.unsplash.com"],
   },
 };
 

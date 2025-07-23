@@ -24,7 +24,9 @@ interface AuthContextType {
   login: (
     email: string,
     password: string
-  ) => Promise<{ success: boolean; error?: string }>;
+  ) => Promise<{
+    user: any; success: boolean; error?: string 
+}>;
   logout: () => Promise<void>;
 }
 
@@ -33,7 +35,7 @@ const AuthContext = createContext<AuthContextType>({
   isLoading: false,
   isAuthenticated: false,
   isAdmin: false,
-  login: async () => ({ success: false, error: "Not implemented" }),
+  login: async () => ({ user: null, success: false, error: "Not implemented" }),
   logout: async () => {},
 });
 
@@ -80,13 +82,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         password,
       });
       if (res?.ok) {
-        return { success: true };
+        // After signIn, session will be updated by next-auth, so we can use the current user state
+        return { user, success: true };
       } else {
-        return { success: false, error: res?.error || "Login failed" };
+        return { user: null, success: false, error: res?.error || "Login failed" };
       }
     } catch (error) {
       console.error("Login error:", error);
-      return { success: false, error: "An unexpected error occurred" };
+      return { user: null, success: false, error: "An unexpected error occurred" };
     }
   };
 

@@ -7,7 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
-import ReactPixel from "react-facebook-pixel";
+// import ReactPixel from "react-facebook-pixel";
 import getUserCity from "../helpers/getUserCity";
 
 interface Suggestion {
@@ -45,12 +45,21 @@ const Navbar = () => {
   useEffect(() => {
     if (!search.trim()) return;
 
-    const timeout = setTimeout(() => {
-      ReactPixel.track("Search", {
-        search_string: search,
-        content_category: "Products",
-        city: city ?? undefined,
-      });
+    const timeout = setTimeout(async () => {
+      if (typeof window !== "undefined") {
+        try {
+          const pixelModule = await import("react-facebook-pixel");
+          const ReactPixel = pixelModule.default;
+
+          ReactPixel.track("Search", {
+            search_string: search,
+            content_category: "Products",
+            city: city ?? "Unknown",
+          });
+        } catch (error) {
+          console.error("Meta Pixel tracking failed (Search):", error);
+        }
+      }
     }, 2000);
 
     return () => clearTimeout(timeout);

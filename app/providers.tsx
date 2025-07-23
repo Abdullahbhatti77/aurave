@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 export function Providers({ children }: { children: ReactNode }) {
   return <>{children}</>;

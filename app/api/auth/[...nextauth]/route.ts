@@ -3,6 +3,23 @@ import { compare } from "bcrypt";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+// Extend the User and Session types to include 'id' and 'role'
+declare module "next-auth" {
+  interface User {
+    id?: string;
+    role?: string;
+  }
+  interface Session {
+    user: {
+      id?: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      role?: string;
+    };
+  }
+}
+
 const handler = NextAuth({
   providers: [
     CredentialsProvider({

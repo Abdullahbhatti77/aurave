@@ -2,12 +2,16 @@ import clientPromise from "../../../lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 
+// Define the correct type for the dynamic route parameters
+interface RouteContext {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
 // PUT handler
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+export async function PUT(req: NextRequest, context: RouteContext) {
+  const { id } = await context.params;
   const body = await req.json();
   const {
     name,
@@ -60,11 +64,8 @@ export async function PUT(
 }
 
 // DELETE handler
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+export async function DELETE(req: NextRequest, context: RouteContext) {
+  const { id } = await context.params;
   const client = await clientPromise;
   const db = client.db("aurave");
 

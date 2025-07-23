@@ -30,6 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.variable} font-sans antialiased`}>
         {/* <Navbar /> */}
+        {/* <h1>bbmnb</h1> */}
         <AppProviders>{children}</AppProviders>
         {/* <Footer /> */}
       </body>

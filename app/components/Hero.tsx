@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Star, Shield, Truck, Heart, Zap } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useCart } from "../context/CartContext";
-import ReactPixel from "react-facebook-pixel";
+// import ReactPixel from "react-facebook-pixel";
 import getUserCity from "../helpers/getUserCity";
 
 interface Product {
@@ -106,21 +106,30 @@ const HomePage = () => {
     },
   ];
 
-  const handleAddToCart = (product: Product) => {
+  const handleAddToCart = async (product: Product) => {
     addToCart(product.id, 1, {
       name: product.name,
       image: product.image,
       price: product.price,
       originalPrice: product.originalPrice,
     });
-    // Optionally uncomment ReactPixel and toast for tracking and feedback
-    ReactPixel.track("AddToCart", {
-      content_name: product.name,
-      content_ids: [product.id],
-      value: product.price,
-      currency: "PKR",
-      city: city ?? undefined,
-    });
+
+    if (typeof window !== "undefined") {
+      try {
+        const pixelModule = await import("react-facebook-pixel");
+        const ReactPixel = pixelModule.default;
+
+        ReactPixel.track("AddToCart", {
+          content_name: product.name,
+          content_ids: [product.id],
+          value: product.price,
+          currency: "PKR",
+          city: city ?? "Unknown",
+        });
+      } catch (error) {
+        console.error("Meta Pixel tracking failed (AddToCart):", error);
+      }
+    }
   };
 
   return (

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ReactPixel from "react-facebook-pixel";
 
 const COOKIE_CONSENT_KEY = "meta_cookie_consent";
 
@@ -10,25 +9,50 @@ export default function CookieBanner() {
 
   useEffect(() => {
     const storedConsent = localStorage.getItem(COOKIE_CONSENT_KEY);
+
     if (storedConsent === "true") {
-      ReactPixel.grantConsent();
       setConsentChecked(true);
+
+      if (typeof window !== "undefined") {
+        import("react-facebook-pixel").then((pixelModule) => {
+          const ReactPixel = pixelModule.default;
+          ReactPixel.grantConsent?.();
+        });
+      }
     } else if (storedConsent === "false") {
-      ReactPixel.revokeConsent();
       setConsentChecked(true);
+
+      if (typeof window !== "undefined") {
+        import("react-facebook-pixel").then((pixelModule) => {
+          const ReactPixel = pixelModule.default;
+          ReactPixel.revokeConsent?.();
+        });
+      }
     }
   }, []);
 
   const handleAccept = () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, "true");
-    ReactPixel.grantConsent();
     setConsentChecked(true);
+
+    if (typeof window !== "undefined") {
+      import("react-facebook-pixel").then((pixelModule) => {
+        const ReactPixel = pixelModule.default;
+        ReactPixel.grantConsent?.();
+      });
+    }
   };
 
   const handleReject = () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, "false");
-    ReactPixel.revokeConsent();
     setConsentChecked(true);
+
+    if (typeof window !== "undefined") {
+      import("react-facebook-pixel").then((pixelModule) => {
+        const ReactPixel = pixelModule.default;
+        ReactPixel.revokeConsent?.();
+      });
+    }
   };
 
   if (consentChecked) return null;

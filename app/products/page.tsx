@@ -1,18 +1,15 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useEffect, useMemo, Suspense } from "react";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, Filter, Grid, List, X, Search, ChevronDown } from "lucide-react";
-// import Navbar from "../components/Navbar";
-// import Footer from "../components/Footer";
 import { useCart } from "../context/CartContext";
 import { Button } from "../components/ui/button";
-// import { useToast } from "@/components/ui/use-toast";
-import { Slider } from "../components/ui/slider";
-import ReactPixel from "react-facebook-pixel";
+// import { Slider } from "../components/ui/slider";
 import getUserCity from "../helpers/getUserCity";
 
 interface Product {
@@ -30,7 +27,7 @@ interface Product {
   stock?: number;
 }
 
-const ProductsPage = () => {
+const ProductsContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const searchTermFromQuery = searchParams.get("search")?.toLowerCase() || "";
@@ -45,7 +42,6 @@ const ProductsPage = () => {
   const [error, setError] = useState<string | null>(null);
   const { addToCart, isLoading } = useCart();
   const [city, setCity] = useState<string | null>(null);
-  // const { toast } = useToast();
 
   const allCategories = [
     { id: "serum", name: "Serums" },
@@ -79,16 +75,26 @@ const ProductsPage = () => {
 
     fetchProducts();
   }, []);
+
   useEffect(() => {
     if (!searchTerm) return;
 
-    const timeout = setTimeout(() => {
-      ReactPixel.track("Search", {
-        search_string: searchTerm,
-        content_category: "Products",
-        city: city ?? undefined,
-      });
-    }, 1000); // Debounce for 1 seconds
+    const timeout = setTimeout(async () => {
+      if (typeof window !== "undefined") {
+        try {
+          const pixelModule = await import("react-facebook-pixel");
+          const ReactPixel = pixelModule.default;
+
+          ReactPixel.track("Search", {
+            search_string: searchTerm,
+            content_category: "Products",
+            city: city ?? "Unknown",
+          });
+        } catch (error) {
+          console.error("Meta Pixel tracking failed (Search):", error);
+        }
+      }
+    }, 1000); // Debounce for 1 second
 
     return () => clearTimeout(timeout);
   }, [searchTerm]);
@@ -212,37 +218,19 @@ const ProductsPage = () => {
             ))}
           </div>
         </div>
-
-        {/* <div>
-          <h3 className="text-lg font-semibold text-stone-700 mb-3">
-            Price Range
-          </h3>
-          <Slider
-            min={0}
-            max={maxPrice}
-            step={100}
-            value={priceRange}
-            onValueChange={setPriceRange}
-            className="[&>span:first-child]:h-1 [&>span:first-child>span]:bg-rose-500 [&>span:nth-child(2)>span]:bg-rose-500 [&>span:nth-child(3)>span]:bg-rose-500"
-          />
-          <div className="flex justify-between text-sm text-stone-600 mt-2">
-            <span>{formatPrice(priceRange[0])}</span>
-            <span>{formatPrice(priceRange[1])}</span>
-          </div>
-        </div> */}
       </div>
-      {/* <button
+
+      <button
         onClick={() => setIsFiltersOpen(false)}
         className="w-full mt-8 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white font-semibold py-3 rounded-full transition-colors cursor-pointer"
       >
         Apply Filters
-      </button> */}
+      </button>
     </motion.div>
   );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-100 via-rose-50 to-amber-100 py-40 md:pt-32 md:pb-12">
-      {/* <Navbar /> */}
       <main className="flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -338,10 +326,7 @@ const ProductsPage = () => {
           ) : error ? (
             <div className="text-center py-12">
               <p className="text-red-500 text-lg">{error}</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="mt-4 bg-rose-500 hover:bg-rose-600 text-white font-medium py-2 px-4 rounded-full transition-colors"
-              >
+              <button className="mt-4 bg-rose-500 hover:bg-rose-600 text-white font-medium py-2 px-4 rounded-full transition-colors">
                 Try Again
               </button>
             </div>
@@ -494,8 +479,15 @@ const ProductsPage = () => {
           </motion.div>
         </div>
       </main>
-      {/* <Footer /> */}
     </div>
+  );
+};
+
+const ProductsPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductsContent />
+    </Suspense>
   );
 };
 

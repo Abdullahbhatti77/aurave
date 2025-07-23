@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+// import Navbar from "../components/Navbar";
+// import Footer from "../components/Footer";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -63,7 +63,7 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      {/* <Navbar /> */}
 
       <main className="flex-grow">
         {/* Hero Section */}
@@ -439,7 +439,7 @@ const ContactPage = () => {
         </section>
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

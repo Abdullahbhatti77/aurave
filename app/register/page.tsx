@@ -164,7 +164,7 @@ const RegisterPage = () => {
                 className="appearance-none rounded-b-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
               />
             </div>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <input
                 id="isAdmin"
                 name="isAdmin"
@@ -184,7 +184,7 @@ const RegisterPage = () => {
               >
                 Register as Admin
               </label>
-            </div>
+            </div> */}
 
             <button
               type="submit"

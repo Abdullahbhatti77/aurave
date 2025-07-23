@@ -7,7 +7,7 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-import ReactPixel from "react-facebook-pixel";
+// import ReactPixel from "react-facebook-pixel";
 import getUserCity from "../helpers/getUserCity";
 
 interface CartItem {
@@ -38,20 +38,20 @@ interface CartContextType {
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
-const [city, setCity] = useState<string | null>(null); // State for city
+// const [city, setCity] = useState<string | null>(null);
 // const city = await getUserCity();
 // Fetch city on mount
-useEffect(() => {
-  async function fetchCity() {
-    try {
-      const userCity = await getUserCity();
-      setCity(userCity);
-    } catch (err) {
-      console.error("Error fetching city:", err);
-    }
-  }
-  fetchCity();
-}, []);
+// useEffect(() => {
+//   async function fetchCity() {
+//     try {
+//       const userCity = await getUserCity();
+//       setCity(userCity);
+//     } catch (err) {
+//       console.error("Error fetching city:", err);
+//     }
+//   }
+//   fetchCity();
+// }, []);
 
 export function useCart() {
   const context = useContext(CartContext);
@@ -67,6 +67,7 @@ interface CartProviderProps {
 
 export function CartProvider({ children }: CartProviderProps) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [city, setCity] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -75,6 +76,17 @@ export function CartProvider({ children }: CartProviderProps) {
     (total, item) => total + item.price * item.quantity,
     0
   );
+  useEffect(() => {
+    async function fetchCity() {
+      try {
+        const userCity = await getUserCity();
+        setCity(userCity);
+      } catch (err) {
+        console.error("Error fetching city:", err);
+      }
+    }
+    fetchCity();
+  }, []);
 
   // Fetch cart on initial load
   useEffect(() => {
@@ -122,28 +134,33 @@ export function CartProvider({ children }: CartProviderProps) {
 
       const data = await response.json();
       setCartItems(data.cart || []);
-      // console.log("Cart updated:", data?.cart);
-      // Fire Meta Pixel AddToCart event
-      ReactPixel.track("AddToCart", {
-        content_ids: [productId],
-        content_type: "product",
-        value: data.cart.reduce(
-          (total: number, item: CartItem) => total + item.price * item.quantity,
-          0
-        ),
-        // contents: data.cart.map((item: CartItem) => ({
-        //   id: item.productId,
-        //   quantity: item.quantity,
-        //   item_price: item.price,
-        // })),
-        content_name: meta?.name || "Product",
-        // content_category: meta?.category || "General",
-        currency: "PKR",
-        city: city ?? undefined,
-        quantity: quantity,
-      });
+
+      if (typeof window !== "undefined") {
+        try {
+          const pixelModule = await import("react-facebook-pixel");
+          const ReactPixel = pixelModule.default;
+
+          const totalValue = data.cart.reduce(
+            (total: number, item: CartItem) =>
+              total + item.price * item.quantity,
+            0
+          );
+
+          ReactPixel.track("AddToCart", {
+            content_ids: [productId],
+            content_type: "product",
+            value: totalValue,
+            content_name: meta?.name || "Product",
+            currency: "PKR",
+            city: city ?? "Unknown",
+            quantity: quantity,
+          });
+        } catch (pixelError) {
+          console.error("Meta Pixel tracking failed (AddToCart):", pixelError);
+        }
+      }
     } catch (err) {
-      // ...
+      // Handle error if needed
     } finally {
       setIsLoading(false);
     }

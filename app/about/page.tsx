@@ -2,17 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import {
-  Droplet,
-  Sparkles,
-  Leaf,
-  Users,
-  Target,
-  Microscope,
-  Zap,
-} from "lucide-react";
-import { Button } from "../components/ui/button";
-// import { Link } from "react-router-dom";
+import { Droplet, Sparkles, Leaf, Microscope, Zap } from "lucide-react";
 
 const AboutPage = () => {
   const teamMembers = [
