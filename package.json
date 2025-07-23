@@ -33,6 +33,7 @@
     "next-auth": "^4.24.11",
     "next-cloudinary": "^6.16.0",
     "react": "^19.0.0",
+    "react-dom": "^19.1.0",
     "react-facebook-pixel": "^1.0.4",
     "react-meta-pixel": "^2.0.2",
     "react-router-dom": "^7.6.3",
