@@ -133,9 +133,9 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen text-stone-800 dark:text-rose-100">
-      <section className="relative overflow-hidden py-40 md:py-32 hero-bg-light dark:hero-bg-dark">
-        <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-amber-500/10 to-transparent dark:from-rose-900/20 dark:via-amber-800/20"></div>
+    <div className="min-h-screen text-stone-800">
+      <section className="relative overflow-hidden py-40 md:py-32 hero-bg-light">
+        <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-amber-500/10 to-transparent"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -149,7 +149,7 @@ const HomePage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
-                  className="text-5xl lg:text-6xl font-extrabold leading-tight text-stone-900 dark:text-white"
+                  className="text-5xl lg:text-6xl font-extrabold leading-tight text-stone-900"
                 >
                   Unlock Your Radiance
                   <span className="block text-gradient-theme mt-2">
@@ -159,7 +159,7 @@ const HomePage = () => {
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-xl text-stone-600 dark:text-rose-200 leading-relaxed"
+                  className="text-xl text-stone-600 leading-relaxed"
                 >
                   Experience the transformative power of nature and science.
                   Aurave offers luxurious, effective skincare designed to reveal
@@ -213,7 +213,7 @@ const HomePage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8, duration: 0.5 }}
-                className="absolute -bottom-8 -left-8 bg-white dark:bg-stone-800 rounded-2xl p-6 shadow-xl border border-rose-100 dark:border-stone-700"
+                className="absolute -bottom-8 -left-8 bg-white rounded-2xl p-6 shadow-xl border border-rose-100"
               >
                 <div className="flex items-center space-x-3">
                   <div className="flex text-amber-400">
@@ -222,10 +222,10 @@ const HomePage = () => {
                     ))}
                   </div>
                   <div>
-                    <p className="font-semibold text-stone-900 dark:text-white">
+                    <p className="font-semibold text-stone-900">
                       4.9/5 Stars
                     </p>
-                    <p className="text-sm text-stone-600 dark:text-rose-200">
+                    <p className="text-sm text-stone-600">
                       From 2,500+ Happy Customers
                     </p>
                   </div>
@@ -236,7 +236,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="py-16 md:py-24 bg-white dark:bg-stone-800/30">
+      <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -245,10 +245,10 @@ const HomePage = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-stone-900 dark:text-white mb-4">
+            <h2 className="text-4xl font-bold text-stone-900 mb-4">
               The Aurave Promise
             </h2>
-            <p className="text-lg text-stone-600 dark:text-rose-200 max-w-3xl mx-auto">
+            <p className="text-lg text-stone-600 max-w-3xl mx-auto">
               We are committed to delivering exceptional skincare that you can
               trust. Here's what sets Aurave apart:
             </p>
@@ -262,15 +262,15 @@ const HomePage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ delay: index * 0.2, duration: 0.6 }}
-                className="text-center p-8 rounded-2xl bg-gradient-to-br from-rose-50 to-amber-50 dark:from-stone-700 dark:to-neutral-700 hover:shadow-2xl transition-all duration-300 product-card-hover border border-rose-100 dark:border-stone-600"
+                className="text-center p-8 rounded-2xl bg-gradient-to-br from-rose-50 to-amber-50 hover:shadow-2xl transition-all duration-300 product-card-hover border border-rose-100"
               >
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-rose-500 to-amber-500 dark:from-rose-600 dark:to-amber-600 rounded-full mb-6 shadow-lg">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-rose-500 to-amber-500 rounded-full mb-6 shadow-lg">
                   <benefit.icon className="h-10 w-10 text-white" />
                 </div>
-                <h3 className="text-2xl font-semibold text-stone-900 dark:text-amber-300 mb-3">
+                <h3 className="text-2xl font-semibold text-stone-900 mb-3">
                   {benefit.title}
                 </h3>
-                <p className="text-stone-600 dark:text-rose-200 leading-relaxed">
+                <p className="text-stone-600 leading-relaxed">
                   {benefit.description}
                 </p>
               </motion.div>
@@ -279,7 +279,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="py-16 md:py-24 bg-gradient-to-br from-stone-100 via-rose-50 to-amber-100 dark:from-stone-900 dark:via-neutral-800 dark:to-rose-950">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-stone-100 via-rose-50 to-amber-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -288,10 +288,10 @@ const HomePage = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-stone-900 dark:text-white mb-4">
+            <h2 className="text-4xl font-bold text-stone-900 mb-4">
               Our Featured Elixirs
             </h2>
-            <p className="text-lg text-stone-600 dark:text-rose-200 max-w-3xl mx-auto">
+            <p className="text-lg text-stone-600 max-w-3xl mx-auto">
               Handpicked favorites loved by our community for their
               transformative results.
             </p>
@@ -305,7 +305,7 @@ const HomePage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ delay: index * 0.2, duration: 0.7 }}
-                className="bg-white dark:bg-stone-800 rounded-2xl shadow-xl overflow-hidden product-card-hover flex flex-col"
+                className="bg-white rounded-2xl shadow-xl overflow-hidden product-card-hover flex flex-col"
               >
                 <Link href={`/product/${product.id}`} className="block">
                   <div className="relative">
@@ -316,7 +316,7 @@ const HomePage = () => {
                       width={300}
                       height={216}
                     />
-                    <div className="absolute top-4 right-4 bg-rose-500 dark:bg-amber-600 text-white px-3 py-1.5 rounded-full text-sm font-semibold shadow-md">
+                    <div className="absolute top-4 right-4 bg-rose-500 text-white px-3 py-1.5 rounded-full text-sm font-semibold shadow-md">
                       Save PKR{" "}
                       {(product.originalPrice - product.price).toFixed(0)}
                     </div>
@@ -336,22 +336,22 @@ const HomePage = () => {
                         />
                       )}
                     </div>
-                    <span className="text-sm text-stone-600 dark:text-rose-200">
+                    <span className="text-sm text-stone-600">
                       {product.rating.toFixed(1)} ({product.reviews} reviews)
                     </span>
                   </div>
 
                   <Link href={`/product/${product.id}`}>
-                    <h3 className="text-xl font-semibold text-stone-900 dark:text-amber-300 mb-2 hover:text-rose-600 dark:hover:text-amber-400 transition-colors">
+                    <h3 className="text-xl font-semibold text-stone-900 mb-2 hover:text-rose-600 transition-colors">
                       {product.name}
                     </h3>
                   </Link>
 
                   <div className="flex items-baseline space-x-2 mb-4">
-                    <span className="text-2xl font-bold text-rose-600 dark:text-amber-400">
+                    <span className="text-2xl font-bold text-rose-600">
                       PKR {product.price.toFixed(2)}
                     </span>
-                    <span className="text-md text-stone-500 dark:text-rose-300 line-through">
+                    <span className="text-md text-stone-500 line-through">
                       PKR {product.originalPrice.toFixed(2)}
                     </span>
                   </div>
@@ -389,7 +389,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="py-16 md:py-24 bg-gradient-to-r from-rose-600 to-amber-600 dark:from-rose-700 dark:to-amber-700">
+      <section className="py-16 md:py-24 bg-gradient-to-r from-rose-600 to-amber-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -402,7 +402,7 @@ const HomePage = () => {
             <h2 className="text-4xl font-bold text-white">
               Join the Aurave Glow
             </h2>
-            <p className="text-xl text-rose-100 dark:text-amber-100">
+            <p className="text-xl text-rose-100">
               Subscribe for exclusive skincare insights, early access to new
               arrivals, and special promotions.
             </p>
@@ -420,7 +420,7 @@ const HomePage = () => {
               />
               <Button
                 type="submit"
-                className="bg-white text-rose-600 hover:bg-rose-50 dark:text-amber-700 dark:hover:bg-amber-50 px-8 py-3.5 rounded-full font-semibold shadow-md transition-transform hover:scale-105"
+                className="bg-white text-rose-600 hover:bg-rose-50 px-8 py-3.5 rounded-full font-semibold shadow-md transition-transform hover:scale-105"
               >
                 Subscribe Now
               </Button>

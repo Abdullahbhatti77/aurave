@@ -62,7 +62,8 @@ export default function CookieBanner() {
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 text-sm leading-relaxed">
           <p>
-            We use cookies to track user actions via Meta Pixel.{" "}
+            {/* We use cookies to track user actions via Meta Pixel.{" "} */}
+            Do you accept cookies to help us improve your experience?{" "}
             <a
               href="https://www.facebook.com/policies/cookies/"
               target="_blank"
@@ -75,7 +76,7 @@ export default function CookieBanner() {
           </p>
         </div>
         <button
-          onClick={handleReject}
+          onClick={handleAccept}
           className="text-gray-400 hover:text-white text-xl cursor-pointer"
           aria-label="Close cookie banner"
         >
@@ -84,7 +85,7 @@ export default function CookieBanner() {
       </div>
       <div className="mt-4 flex justify-end gap-3">
         <button
-          onClick={handleReject}
+          onClick={handleAccept}
           className="bg-gray-700 hover:bg-gray-600 transition px-5 py-2 text-sm rounded-full font-semibold cursor-pointer"
         >
           Reject

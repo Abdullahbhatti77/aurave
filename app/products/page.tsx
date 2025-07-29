@@ -220,12 +220,12 @@ const ProductsContent = () => {
         </div>
       </div>
 
-      <button
+      {/* <button
         onClick={() => setIsFiltersOpen(false)}
         className="w-full mt-8 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white font-semibold py-3 rounded-full transition-colors cursor-pointer"
       >
         Apply Filters
-      </button>
+      </button> */}
     </motion.div>
   );
 
@@ -351,7 +351,7 @@ const ProductsContent = () => {
                     type: "spring",
                     stiffness: 120,
                   }}
-                  className={`bg-white dark:bg-stone-800 rounded-2xl shadow-xl overflow-hidden product-card-hover flex flex-col ${
+                  className={`bg-white rounded-2xl shadow-xl overflow-hidden product-card-hover flex flex-col ${
                     viewMode === "list" ? "sm:flex-row" : ""
                   }`}
                 >
@@ -370,7 +370,7 @@ const ProductsContent = () => {
                         viewMode === "list" ? "sm:h-full h-64" : "h-72"
                       }`}
                     />
-                    <div className="absolute top-3 right-3 bg-rose-500 dark:bg-amber-600 text-white px-2.5 py-1 rounded-full text-xs font-semibold shadow-md">
+                    <div className="absolute top-3 right-3 bg-rose-500 text-white px-2.5 py-1 rounded-full text-xs font-semibold shadow-md">
                       Save {formatPrice(product.savings)}
                     </div>
                   </Link>

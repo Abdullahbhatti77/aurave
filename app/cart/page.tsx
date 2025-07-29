@@ -315,9 +315,9 @@ const CartPage = () => {
                 {promoSuccess && (
                   <p className="text-green-500 text-sm mt-2">{promoSuccess}</p>
                 )}
-                <p className="text-gray-600 text-sm mt-2">
+                {/* <p className="text-gray-600 text-sm mt-2">
                   Try "AURAVE20" for 20% off your order
-                </p>
+                </p> */}
               </div>
             </div>
             <div className="bg-white rounded-2xl shadow-lg p-6 h-fit sticky top-24">

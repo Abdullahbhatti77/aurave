@@ -1,12 +1,6 @@
 // tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
-  // content: ["./app/**/*.{js,jsx,tsx}", "./components/**/*.{js,jsx,tsx}"],
-  // content: [
-  //   "./app/**/*.{js,jsx,tsx}", // Includes app/components/Footer.tsx
-  //   "./components/**/*.{js,jsx,tsx}",
-  // ],
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",

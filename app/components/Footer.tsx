@@ -3,32 +3,13 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  Instagram,
-  Facebook,
-  Twitter,
-  Mail,
-  Phone,
-  MapPin,
-} from "lucide-react";
+import { Instagram, Facebook, Mail, Phone, MapPin } from "lucide-react";
 import { Button } from "../components/ui/button";
-// import { toast } from "../components/ui/use-toast";
-// import ReactPixel from "react-facebook-pixel";
 
 const Footer = () => {
   useEffect(() => {
-    // Track footer view
     // ReactPixel.track("ViewContent", { content_name: "Footer" });
   }, []);
-
-  const handleNonImplementedClick = (item: string) => {
-    // ReactPixel.track("Custom", { content_name: `${item} Clicked` });
-    // toast({
-    //   title: "🚧 Feature Not Implemented",
-    //   description: "This feature isn't implemented yet—but don't worry! You can request it in your next prompt! 🚀",
-    //   className: "bg-highlight text-background border-0",
-    // });
-  };
 
   return (
     <footer className="bg-[#fdf6f0] text-text-primary">
@@ -52,21 +33,32 @@ const Footer = () => {
               glow.
             </p>
             <div className="flex space-x-3">
-              {[
-                { icon: Instagram, name: "Instagram" },
-                { icon: Facebook, name: "Facebook" },
-                { icon: Twitter, name: "Twitter" },
-              ].map(({ icon: Icon, name }, index) => (
+              <Link
+                href="https://www.instagram.com/official_aurave/profilecard/?igsh=MW85MndnOGt2Y29kbA=="
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button
-                  key={index}
                   variant="ghost"
                   size="icon"
-                  onClick={() => handleNonImplementedClick(name)}
                   className="text-[#d7a7b1] hover:text-highlight hover:bg-accent-brand/20 cursor-pointer"
                 >
-                  <Icon className="h-5 w-5" />
+                  <Instagram className="h-5 w-5" />
                 </Button>
-              ))}
+              </Link>
+              <Link
+                href="https://www.facebook.com/profile.php?id=61578983211763&mibextid=ZbWKwL"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-[#d7a7b1] hover:text-highlight hover:bg-accent-brand/20 cursor-pointer"
+                >
+                  <Facebook className="h-5 w-5" />
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -93,12 +85,12 @@ const Footer = () => {
               >
                 About Us
               </Link>
-              <Link
+              {/* <Link
                 href="/contact"
                 className="hover:text-highlight transition-colors text-sm"
               >
                 Contact
-              </Link>
+              </Link> */}
             </div>
           </div>
 
@@ -131,11 +123,11 @@ const Footer = () => {
             <div className="space-y-3 mt-3">
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-[#d7a7b1]" />
-                <span className="text-sm">care@aurave.com</span>
+                <span className="text-sm">officialaurave@gmail.com</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-4 w-4 text-[#d7a7b1]" />
-                <span className="text-sm">+92 (300) 123-4567</span>
+                <span className="text-sm">03274033416</span>
               </div>
               <div className="flex items-center space-x-3">
                 <MapPin className="h-4 w-4 text-[#d7a7b1]" />
