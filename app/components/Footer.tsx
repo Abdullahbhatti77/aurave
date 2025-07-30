@@ -89,7 +89,7 @@ const Footer = () => {
                 href="/contact"
                 className="hover:text-highlight transition-colors text-sm"
               >
-                Contact
+                Contact12
               </Link> */}
             </div>
           </div>
