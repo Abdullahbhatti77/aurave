@@ -356,7 +356,7 @@ const ProductsContent = () => {
                   }`}
                 >
                   <Link
-                    href={`/product/${product.id}`}
+                    href={`/products/${product.id}`}
                     className={`block relative ${
                       viewMode === "list" ? "sm:w-56 flex-shrink-0" : ""
                     }`}

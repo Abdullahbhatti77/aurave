@@ -3,8 +3,6 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
-// import Navbar from "../components/Navbar";
-// import Footer from "../components/Footer";
 
 interface Product {
   id: string;
@@ -18,6 +16,9 @@ interface Product {
   reviewCount: number;
   category: string;
   featured?: boolean;
+  howToUse: string;
+  benefits: string[];
+  ingredients: string[];
 }
 
 interface User {
@@ -36,6 +37,8 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [newBenefit, setNewBenefit] = useState("");
+  const [newIngredient, setNewIngredient] = useState("");
   const initialProduct: Omit<Product, "id"> = {
     name: "",
     description: "",
@@ -47,6 +50,9 @@ const AdminDashboard = () => {
     reviewCount: 0,
     category: "",
     featured: false,
+    howToUse: "",
+    benefits: [],
+    ingredients: [],
   };
   const [newProduct, setNewProduct] =
     useState<Omit<Product, "id">>(initialProduct);
@@ -134,6 +140,9 @@ const AdminDashboard = () => {
           savings: Number(newProduct.originalPrice) - Number(newProduct.price),
           rating: Number(newProduct.rating),
           reviewCount: Number(newProduct.reviewCount),
+          benefits: newProduct.benefits.length > 0 ? newProduct.benefits : [],
+          ingredients:
+            newProduct.ingredients.length > 0 ? newProduct.ingredients : [],
         }),
       });
       setNewProduct(initialProduct);
@@ -162,6 +171,12 @@ const AdminDashboard = () => {
             Number(editingProduct.originalPrice) - Number(editingProduct.price),
           rating: Number(editingProduct.rating),
           reviewCount: Number(editingProduct.reviewCount),
+          benefits:
+            editingProduct.benefits.length > 0 ? editingProduct.benefits : [],
+          ingredients:
+            editingProduct.ingredients.length > 0
+              ? editingProduct.ingredients
+              : [],
         }),
       });
       setEditingProduct(null);
@@ -182,6 +197,87 @@ const AdminDashboard = () => {
       loadData();
     } catch (error) {
       console.error("Error deleting product:", error);
+    }
+  };
+  const addBenefit = () => {
+    if (newBenefit.trim()) {
+      if (editingProduct) {
+        // Update editingProduct if in edit mode
+        if (!editingProduct.benefits.includes(newBenefit.trim())) {
+          setEditingProduct({
+            ...editingProduct,
+            benefits: [...editingProduct.benefits, newBenefit.trim()],
+          });
+        }
+      } else {
+        // Update newProduct if in add mode
+        if (!newProduct.benefits.includes(newBenefit.trim())) {
+          setNewProduct({
+            ...newProduct,
+            benefits: [...newProduct.benefits, newBenefit.trim()],
+          });
+        }
+      }
+      setNewBenefit("");
+    }
+  };
+
+  const removeBenefit = (benefitToRemove: string) => {
+    if (editingProduct) {
+      // Update editingProduct if in edit mode
+      setEditingProduct({
+        ...editingProduct,
+        benefits: editingProduct.benefits.filter((b) => b !== benefitToRemove),
+      });
+    } else {
+      // Update newProduct if in add mode
+      setNewProduct({
+        ...newProduct,
+        benefits: newProduct.benefits.filter((b) => b !== benefitToRemove),
+      });
+    }
+  };
+
+  const addIngredient = () => {
+    if (newIngredient.trim()) {
+      if (editingProduct) {
+        // Update editingProduct if in edit mode
+        if (!editingProduct.ingredients.includes(newIngredient.trim())) {
+          setEditingProduct({
+            ...editingProduct,
+            ingredients: [...editingProduct.ingredients, newIngredient.trim()],
+          });
+        }
+      } else {
+        // Update newProduct if in add mode
+        if (!newProduct.ingredients.includes(newIngredient.trim())) {
+          setNewProduct({
+            ...newProduct,
+            ingredients: [...newProduct.ingredients, newIngredient.trim()],
+          });
+        }
+      }
+      setNewIngredient("");
+    }
+  };
+
+  const removeIngredient = (ingredientToRemove: string) => {
+    if (editingProduct) {
+      // Update editingProduct if in edit mode
+      setEditingProduct({
+        ...editingProduct,
+        ingredients: editingProduct.ingredients.filter(
+          (i) => i !== ingredientToRemove
+        ),
+      });
+    } else {
+      // Update newProduct if in add mode
+      setNewProduct({
+        ...newProduct,
+        ingredients: newProduct.ingredients.filter(
+          (i) => i !== ingredientToRemove
+        ),
+      });
     }
   };
 
@@ -450,6 +546,119 @@ const AdminDashboard = () => {
                             }
                           />
                         </div>
+
+                        <div>
+                          <label
+                            htmlFor="add-product-benefits"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Benefits
+                          </label>
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            {newProduct.benefits.map((benefit, index) => (
+                              <span
+                                key={index}
+                                className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded"
+                              >
+                                {benefit}
+                                <button
+                                  type="button"
+                                  className="ml-1 text-red-500 hover:text-red-700"
+                                  onClick={() => removeBenefit(benefit)}
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                          <div className="flex gap-2">
+                            <input
+                              id="add-product-benefits"
+                              type="text"
+                              placeholder="Type a benefit and press Enter or Add"
+                              className="border p-2 w-full rounded-md"
+                              value={newBenefit}
+                              onChange={(e) => setNewBenefit(e.target.value)}
+                              onKeyPress={(e) =>
+                                e.key === "Enter" && addBenefit()
+                              }
+                            />
+                            <button
+                              type="button"
+                              className="px-3 py-2 bg-blue-600 text-white rounded"
+                              onClick={addBenefit}
+                            >
+                              Add
+                            </button>
+                          </div>
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="add-product-ingredients"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Ingredients
+                          </label>
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            {newProduct.ingredients.map((ingredient, index) => (
+                              <span
+                                key={index}
+                                className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded"
+                              >
+                                {ingredient}
+                                <button
+                                  type="button"
+                                  className="ml-1 text-red-500 hover:text-red-700"
+                                  onClick={() => removeIngredient(ingredient)}
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                          <div className="flex gap-2">
+                            <input
+                              id="add-product-ingredients"
+                              type="text"
+                              placeholder="Type an ingredient and press Enter or Add"
+                              className="border p-2 w-full rounded-md"
+                              value={newIngredient}
+                              onChange={(e) => setNewIngredient(e.target.value)}
+                              onKeyPress={(e) =>
+                                e.key === "Enter" && addIngredient()
+                              }
+                            />
+                            <button
+                              type="button"
+                              className="px-3 py-2 bg-green-600 text-white rounded"
+                              onClick={addIngredient}
+                            >
+                              Add
+                            </button>
+                          </div>
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="add-product-how-to-use"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            How to Use
+                          </label>
+                          <input
+                            id="add-product-how-to-use"
+                            type="text"
+                            placeholder="Enter how to use"
+                            className="border p-2 w-full rounded-md"
+                            value={newProduct.howToUse}
+                            onChange={(e) =>
+                              setNewProduct({
+                                ...newProduct,
+                                howToUse: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+
                         <div>
                           <label className="flex items-center space-x-2">
                             <input
@@ -680,6 +889,120 @@ const AdminDashboard = () => {
                             }
                           />
                         </div>
+                        <div>
+                          <label
+                            htmlFor="edit-product-benefits"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Benefits
+                          </label>
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            {editingProduct.benefits.map((benefit, index) => (
+                              <span
+                                key={index}
+                                className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded"
+                              >
+                                {benefit}
+                                <button
+                                  type="button"
+                                  className="ml-1 text-red-500 hover:text-red-700"
+                                  onClick={() => removeBenefit(benefit)}
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                          <div className="flex gap-2">
+                            <input
+                              id="edit-product-benefits"
+                              type="text"
+                              placeholder="Type a benefit and press Enter or Add"
+                              className="border p-2 w-full rounded-md"
+                              value={newBenefit}
+                              onChange={(e) => setNewBenefit(e.target.value)}
+                              onKeyPress={(e) =>
+                                e.key === "Enter" && addBenefit()
+                              }
+                            />
+                            <button
+                              type="button"
+                              className="px-3 py-2 bg-blue-600 text-white rounded"
+                              onClick={addBenefit}
+                            >
+                              Add
+                            </button>
+                          </div>
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="edit-product-ingredients"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            Ingredients
+                          </label>
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            {editingProduct.ingredients.map(
+                              (ingredient, index) => (
+                                <span
+                                  key={index}
+                                  className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded"
+                                >
+                                  {ingredient}
+                                  <button
+                                    type="button"
+                                    className="ml-1 text-red-500 hover:text-red-700"
+                                    onClick={() => removeIngredient(ingredient)}
+                                  >
+                                    ×
+                                  </button>
+                                </span>
+                              )
+                            )}
+                          </div>
+                          <div className="flex gap-2">
+                            <input
+                              id="edit-product-ingredients"
+                              type="text"
+                              placeholder="Type an ingredient and press Enter or Add"
+                              className="border p-2 w-full rounded-md"
+                              value={newIngredient}
+                              onChange={(e) => setNewIngredient(e.target.value)}
+                              onKeyPress={(e) =>
+                                e.key === "Enter" && addIngredient()
+                              }
+                            />
+                            <button
+                              type="button"
+                              className="px-3 py-2 bg-green-600 text-white rounded"
+                              onClick={addIngredient}
+                            >
+                              Add
+                            </button>
+                          </div>
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="edit-product-how-to-use"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                          >
+                            How to Use
+                          </label>
+                          <input
+                            id="edit-product-how-to-use"
+                            type="text"
+                            placeholder="Enter how to use"
+                            className="border p-2 w-full rounded-md"
+                            value={editingProduct.howToUse}
+                            onChange={(e) =>
+                              setEditingProduct({
+                                ...editingProduct,
+                                howToUse: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+
                         <div>
                           <label className="flex items-center space-x-2">
                             <input

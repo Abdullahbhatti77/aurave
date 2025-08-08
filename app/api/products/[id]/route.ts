@@ -24,6 +24,9 @@ export async function PUT(req: NextRequest, context: RouteContext) {
     reviewCount,
     category,
     featured,
+    howToUse,
+    benefits,
+    ingredients,
   } = body;
 
   if (
@@ -34,6 +37,9 @@ export async function PUT(req: NextRequest, context: RouteContext) {
     !image ||
     rating == null ||
     reviewCount == null ||
+    !howToUse ||
+    benefits.length === 0 ||
+    ingredients.length === 0 ||
     !category
   ) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -55,6 +61,9 @@ export async function PUT(req: NextRequest, context: RouteContext) {
         rating,
         reviewCount,
         category,
+        howToUse,
+        benefits,
+        ingredients,
         featured: !!featured,
       },
     }
