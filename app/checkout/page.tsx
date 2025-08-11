@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import { useCart } from "../context/CartContext";
 import { Button } from "../components/ui/button";
 import getUserCity from "../helpers/getUserCity";
+import axios from "axios";
 
 interface ShippingInfo {
   email: string;
@@ -23,7 +24,7 @@ interface ShippingInfo {
   phone: string;
 }
 
-// -------------------- Subcomponents (moved outside main component) --------------------
+// -------------------- Subcomponents --------------------
 
 const CheckoutProgress = ({ currentStep }: { currentStep: number }) => (
   <div className="flex justify-between items-center mb-6">
@@ -282,6 +283,7 @@ const CheckoutPage = () => {
   const [orderNumber, setOrderNumber] = useState<string>("");
   const [city, setCity] = useState<string | null>(null);
   const [hasTrackedPurchase, setHasTrackedPurchase] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
     email: "",
@@ -340,6 +342,8 @@ const CheckoutPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
     if (step === 1) {
       if (validateForm()) {
         setStep(2);
@@ -348,22 +352,62 @@ const CheckoutPage = () => {
       const randomOrderNumber = `ORD-${Math.floor(
         100000 + Math.random() * 900000
       )}`;
-      setOrderNumber(randomOrderNumber);
+      try {
+        const orderData = {
+          customer: {
+            email: shippingInfo.email,
+            firstName: shippingInfo.firstName,
+            lastName: shippingInfo.lastName,
+            address: shippingInfo.address,
+            city: shippingInfo.city,
+            state: shippingInfo.state,
+            zipCode: shippingInfo.zipCode,
+            country: shippingInfo.country,
+            phone: shippingInfo.phone,
+          },
+          items: cartItems.map((item) => ({
+            productId: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+          orderId: randomOrderNumber,
+          subtotal,
+          shipping,
+          tax,
+          total,
+          paymentMethod,
+          status: "Pending",
+          createdAt: new Date().toISOString(),
+        };
 
-      if (!hasTrackedPurchase && typeof window !== "undefined") {
-        const pixelModule = await import("react-facebook-pixel");
-        pixelModule.default.track("Purchase", {
-          value: total,
-          currency: "PKR",
-          city: city || "Unknown",
-          order_number: randomOrderNumber,
-          payment_method: paymentMethod,
-        });
-        setHasTrackedPurchase(true);
+        const response = await axios.post("/api/orders", orderData);
+        // const orderId = response.data.id;
+
+        if (!hasTrackedPurchase && typeof window !== "undefined") {
+          const pixelModule = await import("react-facebook-pixel");
+          pixelModule.default.track("Purchase", {
+            value: total,
+            currency: "PKR",
+            city: city || "Unknown",
+            order_number: randomOrderNumber,
+            payment_method: paymentMethod,
+          });
+          setHasTrackedPurchase(true);
+        }
+
+        setOrderNumber(randomOrderNumber);
+        setOrderPlaced(true);
+        // clearCart();
+        setStep(3);
+      } catch (err) {
+        setError("Failed to place order. Please try again.");
+        // toast({
+        //   title: "Error",
+        //   description: "Failed to place order.",
+        //   variant: "destructive",
+        // });
       }
-
-      setOrderPlaced(true);
-      setStep(3);
     }
   };
 
@@ -407,6 +451,8 @@ const CheckoutPage = () => {
           <div className="mb-6 sm:mb-8">
             <CheckoutProgress currentStep={step} />
           </div>
+
+          {error && <p className="text-center text-red-500 mb-6">{error}</p>}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             <div className="lg:col-span-2 order-2 lg:order-1">

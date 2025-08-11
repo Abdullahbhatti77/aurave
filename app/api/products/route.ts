@@ -2,26 +2,6 @@ import { ObjectId } from "mongodb";
 import clientPromise from "../../lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
-// export async function GET() {
-//   const client = await clientPromise;
-//   const db = client.db("aurave");
-//   const products = await db.collection("products").find({}).toArray();
-//   return NextResponse.json(
-//     products.map((p) => ({
-//       id: p._id.toString(),
-//       name: p.name,
-//       description: p.description,
-//       price: p.price,
-//       originalPrice: p.originalPrice,
-//       savings: p.savings,
-//       image: p.image,
-//       rating: p.rating,
-//       reviewCount: p.reviewCount,
-//       category: p.category,
-//       featured: p.featured || false,
-//     }))
-//   );
-// }
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
