@@ -33,25 +33,12 @@ interface CartContextType {
 
   updateQuantity: (id: string, quantity: number) => Promise<void>;
   removeItem: (id: string) => Promise<void>;
+  clearCart: () => Promise<void>;
   isLoading: boolean;
   error: string | null;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
-// const [city, setCity] = useState<string | null>(null);
-// const city = await getUserCity();
-// Fetch city on mount
-// useEffect(() => {
-//   async function fetchCity() {
-//     try {
-//       const userCity = await getUserCity();
-//       setCity(userCity);
-//     } catch (err) {
-//       console.error("Error fetching city:", err);
-//     }
-//   }
-//   fetchCity();
-// }, []);
 
 export function useCart() {
   const context = useContext(CartContext);
@@ -217,6 +204,31 @@ export function CartProvider({ children }: CartProviderProps) {
       setIsLoading(false);
     }
   };
+  // Clear all items from cart
+  const clearCart = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/cart/clear", {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to clear cart");
+      }
+
+      const data = await response.json();
+      setCartItems(data.cart || []);
+    } catch (err) {
+      setError("Error clearing cart. Please try again.");
+      console.error("Error clearing cart:", err);
+      // Fallback: clear cart locally if API fails
+      setCartItems([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const value = {
     cartItems,
@@ -225,6 +237,7 @@ export function CartProvider({ children }: CartProviderProps) {
     addToCart,
     updateQuantity,
     removeItem,
+    clearCart,
     isLoading,
     error,
   };

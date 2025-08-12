@@ -276,7 +276,7 @@ const EmptyCartMessage = () => (
 
 const CheckoutPage = () => {
   const router = useRouter();
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart();
   const [step, setStep] = useState<number>(1);
   const [paymentMethod, setPaymentMethod] = useState<string>("cod");
   const [orderPlaced, setOrderPlaced] = useState<boolean>(false);
@@ -398,7 +398,7 @@ const CheckoutPage = () => {
 
         setOrderNumber(randomOrderNumber);
         setOrderPlaced(true);
-        // clearCart();
+        clearCart();
         setStep(3);
       } catch (err) {
         setError("Failed to place order. Please try again.");

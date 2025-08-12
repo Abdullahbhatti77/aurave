@@ -85,12 +85,12 @@ const Footer = () => {
               >
                 About Us
               </Link>
-              {/* <Link
+              <Link
                 href="/contact"
                 className="hover:text-highlight transition-colors text-sm"
               >
-                Contact12
-              </Link> */}
+                Contact
+              </Link>
             </div>
           </div>
 

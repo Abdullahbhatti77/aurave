@@ -180,7 +180,7 @@ const Navbar = () => {
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center space-x-10">
-          {["Home", "Products", "About"].map((label) => {
+          {["Home", "Products", "About", "Contact"].map((label) => {
             const href = label === "Home" ? "/" : `/${label.toLowerCase()}`;
             const isActive = pathname === href;
             return (
