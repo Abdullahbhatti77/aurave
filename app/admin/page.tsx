@@ -181,7 +181,7 @@ const AdminDashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col sm:flex-row justify-between items-center mb-8"
       >
-        <h1 className="text-3xl font-bold text-main-brand font-serif mb-4 sm:mb-0">
+        <h1 className="text-3xl font-bold text-[#d7a7b1] font-serif mb-4 sm:mb-0">
           Admin Dashboard
         </h1>
         <Button onClick={handleLogout} variant="outline">
@@ -197,7 +197,7 @@ const AdminDashboard = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-secondary-accent p-6 rounded-xl shadow-lg flex items-center space-x-4"
+            className="bg-[#fdf6f0] p-6 rounded-xl shadow-lg flex items-center space-x-4"
           >
             <div
               className={`p-3 bg-accent-brand/20 rounded-full ${stat.color}`}
@@ -206,7 +206,7 @@ const AdminDashboard = () => {
             </div>
             <div>
               <p className="text-sm text-text-primary/70">{stat.title}</p>
-              <p className="text-2xl font-bold text-main-brand">{stat.value}</p>
+              <p className="text-2xl font-bold text-[#d7a7b1]">{stat.value}</p>
             </div>
           </motion.div>
         ))}
@@ -225,9 +225,9 @@ const AdminDashboard = () => {
               key={tab.id}
               variant={activeTab === tab.id ? "default" : "ghost"}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center space-x-2 ${
+              className={`flex items-center space-x-2 cursor-pointer ${
                 activeTab === tab.id
-                  ? "bg-main-brand text-black"
+                  ? "bg-[#ead7d1] text-black"
                   : "text-text-primary hover:bg-accent-brand/10"
               }`}
             >

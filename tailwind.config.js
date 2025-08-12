@@ -17,6 +17,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        theme: "#d7a7b1",
         "main-brand": "#FDF6F0", // Dusty Rose
         "accent-brand": "#EAD7D1", // Light Mauve
         "text-primary": "#2F2F2F", // Deep Charcoal

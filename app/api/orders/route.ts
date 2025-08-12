@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
     tax,
     total,
     paymentMethod,
+    orderId,
     status,
     createdAt,
   } = body;
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest) {
     tax == null ||
     total == null ||
     !paymentMethod ||
+    !orderId ||
     !status ||
     !createdAt
   ) {
@@ -69,6 +71,7 @@ export async function POST(req: NextRequest) {
       tax,
       total,
       paymentMethod,
+      orderId,
       status,
       createdAt,
       updatedAt: createdAt,
@@ -112,6 +115,7 @@ export async function GET(req: NextRequest) {
           price: item.price,
           quantity: item.quantity,
         })),
+        orderId: order.orderId,
         subtotal: order.subtotal,
         shipping: order.shipping,
         tax: order.tax,

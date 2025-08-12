@@ -36,14 +36,14 @@ const CustomDialog: React.FC<CustomDialogProps> = ({
           >
             {/* Header */}
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-800 font-serif">
+              <h2 className="text-xl font-semibold text-[#d7a7b1] font-serif">
                 {title}
               </h2>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={onClose}
-                className="text-gray-500 hover:text-gray-800"
+                className="text-gray-500 hover:text-gray-800 cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </Button>
@@ -59,7 +59,7 @@ const CustomDialog: React.FC<CustomDialogProps> = ({
               <Button
                 variant="outline"
                 onClick={onClose}
-                className="border-gray-400 text-gray-800 hover:bg-gray-800 hover:text-white"
+                className="border-gray-400 text-gray-800 hover:bg-gray-800 hover:text-white cursor-pointer"
               >
                 Close
               </Button>
