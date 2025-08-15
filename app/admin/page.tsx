@@ -13,15 +13,9 @@ import {
 import { Button } from "../components/ui/button";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-// import { toast } from "@/components/ui/use-toast";
-
-// Import section components
-// import DashboardOverview from "../components/DashboardOverview";
 import ViewAllOrders from "../components/ViewAllOrders";
 import ManageProducts from "../components/ManageProducts";
 import ViewAllCustomers from "../components/CustomerList";
-// import CustomerList from "./components/CustomerList";
-// import SiteAnalytics from "./components/SiteAnalytics";
 
 const AdminDashboard = () => {
   const router = useRouter();
@@ -32,6 +26,51 @@ const AdminDashboard = () => {
     monthlyRevenue: 0,
     loading: true,
   });
+  const [promoCodeEnabled, setPromoCodeEnabled] = useState(false);
+
+  useEffect(() => {
+    fetchPromoCodeStatus();
+  }, []);
+
+  const fetchPromoCodeStatus = async () => {
+    try {
+      const res = await axios.get("/api/promocode", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auraveUserToken")}`,
+        },
+      });
+      setPromoCodeEnabled(res.data.enabled);
+    } catch (err) {
+      console.error("Error fetching promo code status:", err);
+    }
+  };
+
+  const togglePromoCodeStatus = async () => {
+    try {
+      const res = await axios.post(
+        "/api/promocode",
+        { enabled: !promoCodeEnabled },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auraveUserToken")}`,
+          },
+        }
+      );
+      setPromoCodeEnabled(res.data.enabled);
+    } catch (err) {
+      console.error("Error updating promo code status:", err);
+    }
+  };
+
+  <div className="mt-8 p-4 border rounded-lg bg-[#fdf6f0] flex items-center justify-between">
+    <span className="text-lg font-semibold">Enable Promo Code</span>
+    <Button
+      variant={promoCodeEnabled ? "default" : "outline"}
+      onClick={togglePromoCodeStatus}
+    >
+      {promoCodeEnabled ? "Enabled" : "Disabled"}
+    </Button>
+  </div>;
 
   // Fetch dashboard stats on component mount
   useEffect(() => {
@@ -89,11 +128,6 @@ const AdminDashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("auraveUserToken");
-    // toast({
-    //   title: "Logged Out",
-    //   description: "You have been successfully logged out.",
-    //   className: "bg-highlight text-secondary-accent border-0",
-    // });
     router.push("/login");
   };
 
@@ -129,11 +163,6 @@ const AdminDashboard = () => {
   ];
 
   const navigationTabs = [
-    // {
-    //   id: "overview",
-    //   label: "Overview",
-    //   icon: Home,
-    // },
     {
       id: "orders",
       label: "View All Orders",
@@ -149,25 +178,14 @@ const AdminDashboard = () => {
       label: "Customer List",
       icon: Users,
     },
-    // {
-    //   id: "analytics",
-    //   label: "Site Analytics",
-    //   icon: BarChart2,
-    // },
   ];
 
   const renderActiveSection = () => {
     switch (activeTab) {
-      // case "overview":
-      //   return <DashboardOverview />;
-      // case "orders":
-      //   return <ViewAllOrders />;
       case "products":
         return <ManageProducts />;
       case "customers":
         return <ViewAllCustomers />;
-      // case "analytics":
-      //   return <SiteAnalytics />;
       default:
         return <ViewAllOrders />;
     }
@@ -210,6 +228,17 @@ const AdminDashboard = () => {
             </div>
           </motion.div>
         ))}
+      </div>
+
+      <div className="my-8 p-4 border rounded-lg bg-[#fdf6f0] flex items-center justify-between">
+        <span className="text-lg font-semibold">Enable Promo Code</span>
+        <Button
+          variant={promoCodeEnabled ? "default" : "outline"}
+          onClick={togglePromoCodeStatus}
+          className="cursor-pointer"
+        >
+          {promoCodeEnabled ? "Enabled" : "Disabled"}
+        </Button>
       </div>
 
       {/* Navigation Tabs */}

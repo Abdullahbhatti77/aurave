@@ -137,11 +137,11 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex items-center justify-between w-full md:w-auto">
           <Link href="/" className="flex items-center space-x-2">
-            <img
+            {/* <img
               src="https://storage.googleapis.com/hostinger-horizons-assets-prod/5021481e-4792-4eba-b9a6-64fa10075184/cecfd89cb24a2d052ad987f7c1320390.png"
               alt="Aurave Logo"
               className="h-12 w-auto"
-            />
+            /> */}
             <span className="text-3xl font-bold text-[#d7a7b1] font-serif">
               AuraVé
             </span>

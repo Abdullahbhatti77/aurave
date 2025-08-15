@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-// import Navbar from "../components/Navbar";
-// import Footer from "../components/Footer";
 import { useCart } from "../context/CartContext";
+import axios from "axios";
 
 interface CartItem {
   id: string;
@@ -17,8 +16,6 @@ interface CartItem {
 }
 
 const CartPage = () => {
-  // console.log("CartPage rendered"); // Debug: Confirm component renders
-
   const {
     cartItems = [],
     updateQuantity,
@@ -26,12 +23,31 @@ const CartPage = () => {
     // clearCart,
     isLoading,
   } = useCart() || {};
-  console.log("cartItems:", cartItems); // Debug: Log cart items
 
   const [promoCode, setPromoCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [promoError, setPromoError] = useState("");
   const [promoSuccess, setPromoSuccess] = useState("");
+  const [promoCodeEnabled, setPromoCodeEnabled] = useState(false);
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const res = await axios.get("/api/promocode", {
+          headers: {
+            Authorization: `Bearer ${
+              localStorage.getItem("auraveUserToken") || ""
+            }`, // Optional token
+          },
+        });
+        setPromoCodeEnabled(res.data.enabled);
+      } catch (err) {
+        console.error("Error fetching promo code status:", err);
+        setPromoCodeEnabled(false);
+      }
+    };
+    fetchStatus();
+  }, []);
 
   const applyPromoCode = () => {
     if (promoCode.toLowerCase() === "aurave20") {
@@ -79,7 +95,8 @@ const CartPage = () => {
     (total, item) => total + item.price * item.quantity,
     0
   );
-  const shipping = subtotal > 0 ? 1000 : 0;
+  // const shipping = subtotal > 0 ? 1000 : 0;
+  const shipping = 0;
   const total = subtotal + shipping - discount;
 
   const formatPrice = (price: number) => `PKR ${price.toLocaleString()}.00`;
@@ -289,36 +306,40 @@ const CartPage = () => {
                   </div>
                 </div>
               ))}
-              <div className="mt-6 bg-white rounded-2xl shadow-lg p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                  Have a promo code?
-                </h2>
-                <div className="flex">
-                  <input
-                    type="text"
-                    value={promoCode}
-                    onChange={(e) => setPromoCode(e.target.value)}
-                    placeholder="Enter promo code"
-                    className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-pink-600"
-                  />
-                  <button
-                    onClick={applyPromoCode}
-                    disabled={isLoading}
-                    className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-4 py-2 rounded-r-lg disabled:opacity-50"
-                  >
-                    Apply
-                  </button>
-                </div>
-                {promoError && (
-                  <p className="text-red-500 text-sm mt-2">{promoError}</p>
-                )}
-                {promoSuccess && (
-                  <p className="text-green-500 text-sm mt-2">{promoSuccess}</p>
-                )}
-                {/* <p className="text-gray-600 text-sm mt-2">
+              {promoCodeEnabled && (
+                <div className="mt-6 bg-white rounded-2xl shadow-lg p-6">
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                    Have a promo code?
+                  </h2>
+                  <div className="flex">
+                    <input
+                      type="text"
+                      value={promoCode}
+                      onChange={(e) => setPromoCode(e.target.value)}
+                      placeholder="Enter promo code"
+                      className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-pink-600"
+                    />
+                    <button
+                      onClick={applyPromoCode}
+                      disabled={isLoading}
+                      className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-4 py-2 rounded-r-lg disabled:opacity-50"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                  {promoError && (
+                    <p className="text-red-500 text-sm mt-2">{promoError}</p>
+                  )}
+                  {promoSuccess && (
+                    <p className="text-green-500 text-sm mt-2">
+                      {promoSuccess}
+                    </p>
+                  )}
+                  {/* <p className="text-gray-600 text-sm mt-2">
                   Try "AURAVE20" for 20% off your order
                 </p> */}
-              </div>
+                </div>
+              )}
             </div>
             <div className="bg-white rounded-2xl shadow-lg p-6 h-fit sticky top-24">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">

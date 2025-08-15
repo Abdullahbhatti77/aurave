@@ -208,11 +208,13 @@ const OrderSummary = ({
       </div>
       <div className="flex justify-between">
         <span>Shipping</span>
-        <span>{formatPrice(1000)}</span>
+        {/* <span>{formatPrice(1000)}</span> */}
+        <span>{formatPrice(0)}</span>
       </div>
       <div className="flex justify-between">
         <span>Tax</span>
-        <span>{formatPrice(tax)}</span>
+        {/* <span>{formatPrice(tax)}</span> */}
+        <span>{formatPrice(0)}</span>
       </div>
       <div className="flex justify-between font-bold text-pink-600">
         <span>Total</span>

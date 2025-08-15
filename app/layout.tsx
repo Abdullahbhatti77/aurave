@@ -13,11 +13,21 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Aurave Skincare | Unlock Your Radiance",
+  title: "AuraVè Skincare | Unlock Your Radiance",
   description:
-    "Experience the transformative power of nature and science with Aurave's luxurious, effective skincare designed to reveal your skin's natural luminosity.",
+    "Experience the transformative power of nature and science with AuraVè's luxurious, effective skincare designed to reveal your skin's natural luminosity.",
   icons: {
     icon: "/favicon.ico",
+  },
+  metadataBase: new URL("https://officialaurave.com"),
+  openGraph: {
+    title: "AuraVè",
+    description:
+      "Experience the transformative power of nature and science. AuraVè offers luxurious, effective skincare designed to reveal your skin's natural luminosity.",
+    url: "https://officialaurave.com",
+    siteName: "AuraVè",
+    locale: "en_US",
+    type: "website",
   },
 };
 
