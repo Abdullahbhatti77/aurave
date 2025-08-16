@@ -305,8 +305,10 @@ const CheckoutPage = () => {
     (total, item) => total + item.price * item.quantity,
     0
   );
-  const shipping = subtotal > 0 ? 1000 : 0;
-  const tax = subtotal * 0.05;
+  // const shipping = subtotal > 0 ? 1000 : 0;
+  const shipping = 0;
+  // const tax = subtotal * 0.05;
+  const tax = 0;
   const total = subtotal + shipping + tax;
 
   const formatPrice = (price: number) => `PKR ${price.toLocaleString()}.00`;
