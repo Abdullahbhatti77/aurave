@@ -85,10 +85,10 @@ export async function POST(req: NextRequest) {
     !image ||
     rating == null ||
     reviewCount == null ||
-    !category ||
-    !howToUse ||
-    benefits.length === 0 ||
-    ingredients.length === 0
+    !category
+    // !howToUse ||
+    // benefits.length === 0 ||
+    // ingredients.length === 0
   ) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }

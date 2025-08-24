@@ -25,15 +25,17 @@ interface CartContextType {
   cartItems: CartItem[];
   itemCount: number;
   subtotal: number;
+  discount: number;
+  promoCode: string;
   addToCart: (
     productId: string,
     quantity?: number,
     meta?: Partial<CartItem>
   ) => Promise<void>;
-
   updateQuantity: (id: string, quantity: number) => Promise<void>;
   removeItem: (id: string) => Promise<void>;
   clearCart: () => Promise<void>;
+  applyPromoCode: (code: string) => Promise<void>;
   isLoading: boolean;
   error: string | null;
 }
@@ -57,12 +59,15 @@ export function CartProvider({ children }: CartProviderProps) {
   const [city, setCity] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [discount, setDiscount] = useState<number>(0); // New state for discount
+  const [promoCode, setPromoCode] = useState<string>(""); // New state for promo code
 
   const itemCount = cartItems.reduce((count, item) => count + item.quantity, 0);
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
+
   useEffect(() => {
     async function fetchCity() {
       try {
@@ -75,7 +80,7 @@ export function CartProvider({ children }: CartProviderProps) {
     fetchCity();
   }, []);
 
-  // Fetch cart on initial load
+  // Fetch cart and discount on initial load
   useEffect(() => {
     const fetchCart = async () => {
       setIsLoading(true);
@@ -90,6 +95,9 @@ export function CartProvider({ children }: CartProviderProps) {
 
         const data = await response.json();
         setCartItems(data.items || []);
+        // Assuming the API returns discount and promoCode if previously set
+        setDiscount(data.discount || 0);
+        setPromoCode(data.promoCode || "");
       } catch (err) {
         setError("Error loading cart. Please try again.");
         console.error("Error fetching cart:", err);
@@ -204,7 +212,8 @@ export function CartProvider({ children }: CartProviderProps) {
       setIsLoading(false);
     }
   };
-  // Clear all items from cart
+
+  // Clear all items from cart and reset discount
   const clearCart = async () => {
     setIsLoading(true);
     setError(null);
@@ -220,11 +229,53 @@ export function CartProvider({ children }: CartProviderProps) {
 
       const data = await response.json();
       setCartItems(data.cart || []);
+      setDiscount(0); // Reset discount on clear
+      setPromoCode("");
     } catch (err) {
       setError("Error clearing cart. Please try again.");
       console.error("Error clearing cart:", err);
       // Fallback: clear cart locally if API fails
       setCartItems([]);
+      setDiscount(0);
+      setPromoCode("");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Apply promo code and calculate discount
+  const applyPromoCode = async (code: string) => {
+    setIsLoading(true);
+    try {
+      const subtotal = cartItems.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+      let newDiscount = 0;
+
+      if (code.toLowerCase() === "aurave20") {
+        newDiscount = subtotal * 0.2; // 20% discount
+      } else {
+        newDiscount = 0; // Reset discount for invalid code
+        setError("Invalid promo code");
+        setPromoCode("");
+      }
+
+      // Update discount and promo code locally
+      setDiscount(newDiscount);
+      setPromoCode(code);
+
+      // Optionally sync with API (uncomment and implement API endpoint if needed)
+      // await fetch("/api/cart/apply-promo", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ promoCode: code, discount: newDiscount }),
+      // });
+    } catch (err) {
+      setError("Error applying promo code. Please try again.");
+      console.error("Error applying promo code:", err);
+      setDiscount(0);
+      setPromoCode("");
     } finally {
       setIsLoading(false);
     }
@@ -234,10 +285,13 @@ export function CartProvider({ children }: CartProviderProps) {
     cartItems,
     itemCount,
     subtotal,
+    discount,
+    promoCode,
     addToCart,
     updateQuantity,
     removeItem,
     clearCart,
+    applyPromoCode,
     isLoading,
     error,
   };

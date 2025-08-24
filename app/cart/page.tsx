@@ -6,20 +6,12 @@ import Link from "next/link";
 import { useCart } from "../context/CartContext";
 import axios from "axios";
 
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice: number;
-  image: string;
-  quantity: number;
-}
-
 const CartPage = () => {
   const {
     cartItems = [],
     updateQuantity,
     removeItem,
+    applyPromoCode,
     // clearCart,
     isLoading,
   } = useCart() || {};
@@ -49,16 +41,17 @@ const CartPage = () => {
     fetchStatus();
   }, []);
 
-  const applyPromoCode = () => {
+  const handleApplyPromoCode = () => {
     if (promoCode.toLowerCase() === "aurave20") {
       const subtotal = cartItems.reduce(
         (total, item) => total + item.price * item.quantity,
         0
       );
       setDiscount(subtotal * 0.2);
+      applyPromoCode(promoCode);
       setPromoSuccess("Promo code applied successfully!");
       setPromoError("");
-      console.log("Promo applied:", { subtotal, discount: subtotal * 0.2 }); // Debug
+      console.log("Promo applied:", { subtotal, discount: subtotal * 0.2 });
     } else {
       setPromoError("Invalid promo code");
       setPromoSuccess("");
@@ -320,7 +313,7 @@ const CartPage = () => {
                       className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-pink-600"
                     />
                     <button
-                      onClick={applyPromoCode}
+                      onClick={handleApplyPromoCode}
                       disabled={isLoading}
                       className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-4 py-2 rounded-r-lg disabled:opacity-50"
                     >

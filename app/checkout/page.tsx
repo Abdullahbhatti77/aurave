@@ -278,7 +278,7 @@ const EmptyCartMessage = () => (
 
 const CheckoutPage = () => {
   const router = useRouter();
-  const { cartItems, clearCart } = useCart();
+  const { cartItems, clearCart, discount } = useCart();
   const [step, setStep] = useState<number>(1);
   const [paymentMethod, setPaymentMethod] = useState<string>("cod");
   const [orderPlaced, setOrderPlaced] = useState<boolean>(false);
@@ -309,7 +309,8 @@ const CheckoutPage = () => {
   const shipping = 0;
   // const tax = subtotal * 0.05;
   const tax = 0;
-  const total = subtotal + shipping + tax;
+  // const total = subtotal + shipping + tax;
+  const total = subtotal + shipping + tax - discount;
 
   const formatPrice = (price: number) => `PKR ${price.toLocaleString()}.00`;
 
