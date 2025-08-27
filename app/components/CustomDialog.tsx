@@ -32,7 +32,7 @@ const CustomDialog: React.FC<CustomDialogProps> = ({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="bg-white rounded-xl shadow-lg p-6 w-full max-w-[600px] mx-4 sm:mx-0"
+            className="bg-white rounded-xl shadow-lg p-6 w-full max-w-[900px] mx-4 sm:mx-0"
           >
             {/* Header */}
             <div className="flex justify-between items-center mb-4">

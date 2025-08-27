@@ -81,8 +81,8 @@ export default function ManageProducts() {
   }, [searchTerm]);
 
   return (
-    <main className="pt-6">
-      <div className="mb-6 flex items-center justify-between">
+    <main className="pt-0">
+      {/* <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
             onClick={() => setActiveTab("products")}
@@ -101,7 +101,7 @@ export default function ManageProducts() {
             Users
           </button>
         </div>
-      </div>
+      </div> */}
 
       {isDataLoading ? (
         <p>Loading data...</p>
@@ -175,7 +175,7 @@ export default function ManageProducts() {
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className="px-3 py-1 border rounded disabled:opacity-50"
+                    className="px-3 py-1 border rounded disabled:opacity-50 cursor-pointer"
                   >
                     Prev
                   </button>
@@ -184,7 +184,9 @@ export default function ManageProducts() {
                       key={i}
                       onClick={() => setCurrentPage(i + 1)}
                       className={`px-3 py-1 border rounded ${
-                        currentPage === i + 1 ? "bg-pink-600 text-white" : ""
+                        currentPage === i + 1
+                          ? "bg-pink-600 text-white cursor-pointer"
+                          : "cursor-pointer"
                       }`}
                     >
                       {i + 1}
@@ -195,7 +197,7 @@ export default function ManageProducts() {
                       setCurrentPage((p) => Math.min(totalPages, p + 1))
                     }
                     disabled={currentPage === totalPages}
-                    className="px-3 py-1 border rounded disabled:opacity-50"
+                    className="px-3 py-1 border rounded disabled:opacity-50 cursor-pointer"
                   >
                     Next
                   </button>

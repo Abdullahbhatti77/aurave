@@ -74,18 +74,40 @@ const ViewAllOrders = () => {
   const formatDate = (date: string) => new Date(date).toLocaleDateString();
 
   // Filtered data based on search
-  const filteredOrders = orders.filter((order) => {
-    const searchLower = searchQuery.toLowerCase();
-    return (
-      order.id.toLowerCase().includes(searchLower) ||
-      `${order.customer.firstName} ${order.customer.lastName}`
-        .toLowerCase()
-        .includes(searchLower) ||
-      order.customer.email.toLowerCase().includes(searchLower) ||
-      order.customer.city.toLowerCase().includes(searchLower) ||
-      order.items.some((item) => item.name.toLowerCase().includes(searchLower))
+  // const filteredOrders = orders.filter((order) => {
+  //   const searchLower = searchQuery.toLowerCase();
+  //   return (
+  //     order.id.toLowerCase().includes(searchLower) ||
+  //     `${order.customer.firstName} ${order.customer.lastName}`
+  //       .toLowerCase()
+  //       .includes(searchLower) ||
+  //     order.customer.email.toLowerCase().includes(searchLower) ||
+  //     order.customer.city.toLowerCase().includes(searchLower) ||
+  //     order.items.some((item) => item.name.toLowerCase().includes(searchLower))
+  //   );
+  // });
+
+  // Filtered + Sorted data
+  const filteredOrders = orders
+    .filter((order) => {
+      const searchLower = searchQuery.toLowerCase();
+      return (
+        order.id.toLowerCase().includes(searchLower) ||
+        `${order.customer.firstName} ${order.customer.lastName}`
+          .toLowerCase()
+          .includes(searchLower) ||
+        order.customer.email.toLowerCase().includes(searchLower) ||
+        order.customer.city.toLowerCase().includes(searchLower) ||
+        order.items.some((item) =>
+          item.name.toLowerCase().includes(searchLower)
+        )
+      );
+    })
+    // ✅ Sort by createdAt (latest first)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-  });
 
   // Pagination logic
   const totalPages = Math.max(1, Math.ceil(filteredOrders.length / pageSize));
@@ -96,26 +118,6 @@ const ViewAllOrders = () => {
 
   return (
     <div className="bg-secondary-accent p-6 rounded-xl shadow-lg">
-      {/* <h2 className="text-xl font-semibold text-main-brand mb-4 font-serif">
-        All Orders
-      </h2>
-
-      <div className="flex items-center gap-2 mb-4">
-        <div className="relative flex-1">
-          <input
-            type="text"
-            placeholder="Search orders..."
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="w-full pl-10 pr-4 py-2 border border-accent-brand rounded-lg focus:outline-none focus:ring-2 focus:ring-main-brand bg-background"
-          />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-primary/50" />
-        </div>
-      </div> */}
-
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
         <h2 className="text-xl font-semibold text-[#d7a7b1] font-serif">
           All Orders
@@ -201,6 +203,7 @@ const ViewAllOrders = () => {
                 size="sm"
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
+                className="cursor-pointer"
               >
                 Prev
               </Button>
@@ -211,11 +214,11 @@ const ViewAllOrders = () => {
                   variant={currentPage === i + 1 ? "default" : "outline"}
                   size="sm"
                   onClick={() => setCurrentPage(i + 1)}
-                  className={
+                  className={`px-3 py-1 border rounded ${
                     currentPage === i + 1
-                      ? "bg-main-brand text-black"
-                      : "hover:bg-accent-brand/10"
-                  }
+                      ? "bg-pink-600 text-white cursor-pointer"
+                      : "cursor-pointer"
+                  }`}
                 >
                   {i + 1}
                 </Button>
@@ -228,6 +231,7 @@ const ViewAllOrders = () => {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                 }
                 disabled={currentPage === totalPages}
+                className="cursor-pointer"
               >
                 Next
               </Button>
@@ -243,27 +247,48 @@ const ViewAllOrders = () => {
         title={`Order Details - ${selectedOrder?.orderId || ""}`}
       >
         {selectedOrder && (
-          <div className="space-y-6">
-            <div>
-              <h3 className="font-semibold text-[#d7a7b1] text-lg mb-2">
-                Customer Information
-              </h3>
-              <p>
-                <strong>Name:</strong>{" "}
-                {`${selectedOrder.customer.firstName} ${selectedOrder.customer.lastName}`}
-              </p>
-              <p>
-                <strong>Email:</strong> {selectedOrder.customer.email}
-              </p>
-              <p>
-                <strong>Phone:</strong> {selectedOrder.customer.phone}
-              </p>
-              <p>
-                <strong>Address:</strong> {selectedOrder.customer.address},{" "}
-                {selectedOrder.customer.city}, {selectedOrder.customer.state},{" "}
-                {selectedOrder.customer.zipCode},{" "}
-                {selectedOrder.customer.country}
-              </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-semibold text-[#d7a7b1] text-lg mb-2">
+                  Customer Information
+                </h3>
+                <p>
+                  <strong>Name:</strong>{" "}
+                  {`${selectedOrder.customer.firstName} ${selectedOrder.customer.lastName}`}
+                </p>
+                <p>
+                  <strong>Email:</strong> {selectedOrder.customer.email}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {selectedOrder.customer.phone}
+                </p>
+                <p>
+                  <strong>Address:</strong> {selectedOrder.customer.address},{" "}
+                  {selectedOrder.customer.city}, {selectedOrder.customer.state},{" "}
+                  {selectedOrder.customer.zipCode},{" "}
+                  {selectedOrder.customer.country}
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-[#d7a7b1] text-lg mb-2">
+                  Order Details
+                </h3>
+                <p>
+                  <strong>Payment Method:</strong> {selectedOrder.paymentMethod}
+                </p>
+                <p>
+                  <strong>Status:</strong> {selectedOrder.status}
+                </p>
+                <p>
+                  <strong>Created At:</strong>{" "}
+                  {formatDate(selectedOrder.createdAt)}
+                </p>
+                <p>
+                  <strong>Updated At:</strong>{" "}
+                  {formatDate(selectedOrder.updatedAt)}
+                </p>
+              </div>
             </div>
             <div>
               <h3 className="font-semibold text-[#d7a7b1] text-lg mb-2">
@@ -297,25 +322,6 @@ const ViewAllOrders = () => {
                   <span>{formatPrice(selectedOrder.total)}</span>
                 </div>
               </div>
-            </div>
-            <div>
-              <h3 className="font-semibold text-[#d7a7b1] text-lg mb-2">
-                Order Details
-              </h3>
-              <p>
-                <strong>Payment Method:</strong> {selectedOrder.paymentMethod}
-              </p>
-              <p>
-                <strong>Status:</strong> {selectedOrder.status}
-              </p>
-              <p>
-                <strong>Created At:</strong>{" "}
-                {formatDate(selectedOrder.createdAt)}
-              </p>
-              <p>
-                <strong>Updated At:</strong>{" "}
-                {formatDate(selectedOrder.updatedAt)}
-              </p>
             </div>
           </div>
         )}

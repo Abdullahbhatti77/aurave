@@ -16,6 +16,8 @@ import {
   ImageMinus as MinusIcon,
   FolderPlus as PlusIcon,
 } from "lucide-react";
+import { Stethoscope } from "lucide-react";
+
 import { Button } from "../../components/ui/button";
 import { useCart } from "@/app/context/CartContext";
 import { toast } from "../../components/ui/use-toast";
@@ -354,7 +356,7 @@ export default function ProductDetailPage() {
               {[
                 { icon: Truck, text: "Free Shipping nationwide" },
                 { icon: Shield, text: "Secure & Encrypted Payment" },
-                { icon: RotateCcw, text: "30-Day Easy Returns" },
+                { icon: Stethoscope, text: "Dermatologist Recommended" },
               ].map((item) => (
                 <div
                   key={item.text}

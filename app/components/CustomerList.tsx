@@ -67,16 +67,37 @@ const ViewAllCustomers = () => {
   }, []);
 
   // Filter customers locally
+  // const filteredCustomers = useMemo(() => {
+  //   return customers.filter((customer) => {
+  //     const term = searchTerm.toLowerCase();
+  //     return (
+  //       customer.customer.firstName.toLowerCase().includes(term) ||
+  //       customer.customer.lastName.toLowerCase().includes(term) ||
+  //       customer.customer.email.toLowerCase().includes(term) ||
+  //       customer.customer.phone.toLowerCase().includes(term)
+  //     );
+  //   });
+  // }, [customers, searchTerm]);
+
+  // Filter + Sort customers by createdAt (latest first)
   const filteredCustomers = useMemo(() => {
-    return customers.filter((customer) => {
-      const term = searchTerm.toLowerCase();
-      return (
-        customer.customer.firstName.toLowerCase().includes(term) ||
-        customer.customer.lastName.toLowerCase().includes(term) ||
-        customer.customer.email.toLowerCase().includes(term) ||
-        customer.customer.phone.toLowerCase().includes(term)
-      );
-    });
+    return (
+      customers
+        .filter((customer) => {
+          const term = searchTerm.toLowerCase();
+          return (
+            customer.customer.firstName.toLowerCase().includes(term) ||
+            customer.customer.lastName.toLowerCase().includes(term) ||
+            customer.customer.email.toLowerCase().includes(term) ||
+            customer.customer.phone.toLowerCase().includes(term)
+          );
+        })
+        // ✅ Sort by createdAt (newest first)
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
+    );
   }, [customers, searchTerm]);
 
   // Pagination
@@ -165,6 +186,7 @@ const ViewAllCustomers = () => {
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                className="cursor-pointer"
                 disabled={currentPage === 1}
               >
                 Prev
@@ -176,11 +198,11 @@ const ViewAllCustomers = () => {
                   variant={currentPage === i + 1 ? "default" : "outline"}
                   size="sm"
                   onClick={() => setCurrentPage(i + 1)}
-                  className={
+                  className={`px-3 py-1 border rounded ${
                     currentPage === i + 1
-                      ? "bg-main-brand text-black"
-                      : "hover:bg-accent-brand/10"
-                  }
+                      ? "bg-pink-600 text-white cursor-pointer"
+                      : "cursor-pointer"
+                  }`}
                 >
                   {i + 1}
                 </Button>
@@ -193,6 +215,7 @@ const ViewAllCustomers = () => {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                 }
                 disabled={currentPage === totalPages}
+                className="cursor-pointer"
               >
                 Next
               </Button>

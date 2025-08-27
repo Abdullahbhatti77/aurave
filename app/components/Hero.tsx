@@ -24,11 +24,6 @@ const HomePage = () => {
   const { addToCart, isLoading } = useCart();
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [city, setCity] = useState<string | null>(null);
-
-  // Meta Pixel PageView tracking
-  // useEffect(() => {
-  //   ReactPixel.track("PageView");
-  // }, []);
   // Fetch city on client
   useEffect(() => {
     getUserCity().then((city) => {
@@ -40,14 +35,19 @@ const HomePage = () => {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await fetch("/api/products?featured=true", {
+        const res = await fetch("/api/products", {
           next: { revalidate: 3600 }, // Cache for 1 hour
         });
+
         if (res.ok) {
           const data = await res.json();
-          setFeaturedProducts(data);
+
+          // ✅ Filter only featured products
+          const featured = data.filter((p: any) => p.featured);
+
+          setFeaturedProducts(featured);
         } else {
-          // Fallback to static data if API fails
+          // Fallback to static featured products if API fails
           setFeaturedProducts([
             {
               id: "1",
@@ -222,9 +222,7 @@ const HomePage = () => {
                     ))}
                   </div>
                   <div>
-                    <p className="font-semibold text-stone-900">
-                      4.9/5 Stars
-                    </p>
+                    <p className="font-semibold text-stone-900">4.9/5 Stars</p>
                     <p className="text-sm text-stone-600">
                       From 2,500+ Happy Customers
                     </p>
