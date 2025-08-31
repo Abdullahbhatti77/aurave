@@ -305,7 +305,7 @@ const HomePage = () => {
                 transition={{ delay: index * 0.2, duration: 0.7 }}
                 className="bg-white rounded-2xl shadow-xl overflow-hidden product-card-hover flex flex-col"
               >
-                <Link href={`/product/${product.id}`} className="block">
+                <Link href={`/products/${product.id}`} className="block">
                   <div className="relative">
                     <Image
                       className="w-full h-72 object-cover"
