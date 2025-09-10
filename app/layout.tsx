@@ -15,7 +15,8 @@ export const metadata: Metadata = {
   description:
     "Experience the transformative power of nature and science with AuraVè's luxurious, effective skincare designed to reveal your skin's natural luminosity.",
   icons: {
-    icon: "/favicon.ico",
+    icon: [{ url: "/favicon.ico" }, { url: "/favicon.png", type: "image/png" }],
+    shortcut: "/favicon.ico",
   },
   metadataBase: new URL("https://officialaurave.com"),
   openGraph: {
